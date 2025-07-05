@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}
+Django Tweet
+{% endblock %}
+{% block style %}
+    .container {
+        max-width:max-content ;
+        margin: 40px auto;
+        background-color: #242424;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 15px;
+        animation: fadeInUp 0.6s ease-in-out;
+      }
+      
+      .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Entry animation */
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      {% endblock %}
+{% block content %}
+<h1 class="text-centre text-white mt-4" style="font-family: 'Freckle Face', cursive; color: #00ccff; font-size: 4.5rem; text-shadow: 2px 2px 4px black; text-align:center; ">Welcome to django tweet</h1>
+<a class="btn btn-primary mb-4" href="{% url 'tweet_create'%}">Create a tweet</a>
+<div class="container row gap-3">
+  {% for tweet in tweets %}
+    <div class="card" style="width: 18rem;">
+      <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{tweet.user.username}}</h5>
+        <p class="card-text"> {{tweet.text}}
+        </p>
+        {%if tweet.user == user%}
+        <a href="{%url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
+        <a href="{%url 'tweet_delete' tweet.id%}" class="btn btn-danger">Delete</a>
+        {%endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
