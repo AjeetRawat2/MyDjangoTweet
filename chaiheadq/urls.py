@@ -29,3 +29,4 @@ urlpatterns = [
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static('/tweet/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
+urlpatterns += static('/tweet/search/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
