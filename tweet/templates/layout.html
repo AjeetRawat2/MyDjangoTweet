@@ -78,7 +78,6 @@
         
           a {
             display: inline-block;
-            margin-top: 20px;
             color: #007bff;
             text-decoration: none;
           }
@@ -97,23 +96,33 @@
         
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+   <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <img src="static/Group6.png" alt="image" style ="width: 28px; border-radius: 4px; margin: 9px;">
-          <a class="navbar-brand"style="font-family: 'Freckle Face', cursive; color: #00ccff; font-size: 2.5rem; text-shadow: 2px 2px 4px black;" href="{% url 'tweet_list'%}">Django Tweet</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-               <form class="d-flex" role="search" action="{% url 'search_tweets' %}" method="get">
-                <input class="form-control me-2 mx-10" type="search" name="q" placeholder="Search Tweets" style="margin-left: 10rem; padding: .575rem 15.75rem;" aria-label="Search" />
-                <button class="btn btn-outline-success" type="submit">Search</button>
-              </form>
-            </ul>
-            <form>
-            <a class="btn btn-primary" href="{% url 'tweet_create'%}">Create a tweet</a>
-            </form>
+  <img src="{% static 'Group6.png' %}" alt="image" style="width: 28px; border-radius: 4px; margin: 9px;">
+  <a class="navbar-brand"href="{% url 'tweet_list' %}"
+     style="font-family: 'Freckle Face', cursive; color: #00ccff; font-size: 2.5rem; text-shadow: 2px 2px 4px black;">
+     Django Tweet
+  </a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+    <!-- Responsive Search Form -->
+    <form class="d-flex w-100 justify-content-end flex-wrap mt-2 mt-lg-0"
+          role="search" action="{% url 'search_tweets' %}" method="get">
+      <input class="form-control me-2 flex-grow-1 flex-md-grow-0"
+             type="search" name="q" placeholder="Search Tweets"
+             aria-label="Search"
+             style="min-width: 200px; max-width: 400px;">
+      <button class="btn btn-outline-success mt-2 mt-md-0" type="submit">Search</button>
+    </form>
+      <a class="btn btn-primary mx-2 " href="{% url 'tweet_create'%}">Create </a></button>
             {%if user.is_authenticated %}
             <form method="post" action="{% url 'logout'%}">
               {% csrf_token %}
