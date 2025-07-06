@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1' ]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://mydjangotweet.onrender.com',  # your deployed domain
+]
 # Application definition
 
 INSTALLED_APPS = [
