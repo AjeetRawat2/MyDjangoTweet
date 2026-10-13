@@ -1,57 +1,25 @@
 {% extends "layout.html" %}
-{% block title %}
-Django Tweet
-{% endblock %}
-{% block style %}
-    .container {
-        max-width:max-content ;
-        margin: 40px auto;
-        background-color: #242424;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      }
-      .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-radius: 15px;
-        animation: fadeInUp 0.6s ease-in-out;
-      }
-      
-      .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
-      }
-      
-      /* Entry animation */
-      @keyframes fadeInUp {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      {% endblock %}
+{% block title %}The feed{% endblock %}
+{% block page_heading %}The feed{% endblock %}
 {% block content %}
-<h1 class="text-centre text-white mt-4" style="font-family: 'Freckle Face', cursive; color: #00ccff; font-size: 4.5rem; text-shadow: 2px 2px 4px black; text-align:center; ">Welcome to django tweet</h1>
-<a class="btn btn-primary mb-4" href="{% url 'tweet_create'%}">Create a tweet</a>
-<div class="container row gap-3">
-  {% for tweet in tweets %}
-    <div class="card" style="width: 18rem;">
-      <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">{{tweet.user.username}}</h5>
-        <p class="card-text"> {{tweet.text}}
-        </p>
-        {%if tweet.user == user%}
-        <a href="{%url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
-        <a href="{%url 'tweet_delete' tweet.id%}" class="btn btn-danger">Delete</a>
-        {%endif %}
-      </div>
-    </div>
-  {% endfor %}
-</div>
-
+<section class="feed-intro"><div><span class="section-label">A FRESH LITTLE TIMELINE</span><h2>What's happening?</h2><p>Catch up on the latest from your corner of the world.</p></div><span class="intro-doodle" aria-hidden="true">✳</span></section>
+{% if user.is_authenticated %}
+<a class="composer-card" href="{% url 'tweet_create' %}"><span class="avatar composer-avatar">{{ user.username|first|upper }}</span><span class="composer-prompt">Got a thought to share, {{ user.username }}?</span><span class="composer-attach" aria-hidden="true">＋</span><span class="composer-submit">Post <span>↗</span></span></a>
+{% else %}
+<div class="guest-prompt"><span class="avatar composer-avatar">✦</span><div><strong>Good conversations start with hello.</strong><span>Log in to share what’s on your mind.</span></div><a href="{% url 'login' %}">Join in <span>↗</span></a></div>
+{% endif %}
+<div class="feed-heading"><span>Latest posts</span><span class="feed-count">{{ tweets|length }} {% if tweets|length == 1 %}post{% else %}posts{% endif %} <i></i></span></div>
+<section class="feed-list" aria-label="Latest posts">
+{% for tweet in tweets %}
+  <article class="post-card" data-reveal>
+    <div class="post-top"><span class="avatar">{{ tweet.user.username|first|upper }}</span><div class="post-byline"><strong>{{ tweet.user.username }}</strong><span>@{{ tweet.user.username|slugify }} <i>·</i> <time datetime="{{ tweet.created_at|date:'c' }}">{{ tweet.created_at|timesince }} ago</time></span></div><span class="post-menu-dot" aria-hidden="true">···</span></div>
+    <p class="post-copy">{{ tweet.text|linebreaksbr }}</p>
+    {% if tweet.photo %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" loading="lazy"></div>{% endif %}
+    <div class="post-footer"><span class="post-reaction" aria-label="A little appreciation">✦ <span>Send some love</span></span><div class="post-owner-actions">{% if tweet.user == user %}<a href="{% url 'tweet_edit' tweet.id %}" aria-label="Edit post">Edit <span>↗</span></a><a class="delete-link" href="{% url 'tweet_delete' tweet.id %}" aria-label="Delete post">Delete <span>×</span></a>{% endif %}</div><span class="post-time">{{ tweet.created_at|date:"M j" }}</span></div>
+  </article>
+{% empty %}
+  <div class="empty-state"><span class="empty-orbit">✳</span><h3>It’s quiet in here.</h3><p>Be the first to share a little something with the community.</p><a class="primary-button" href="{% url 'tweet_create' %}">Write the first post <span>↗</span></a></div>
+{% endfor %}
+</section>
 {% endblock %}
+
