@@ -1,27 +1,8 @@
-{% extends 'layout.html' %}
-
+{% extends "layout.html" %}
+{% block title %}Explore{% endblock %}
+{% block page_heading %}Explore{% endblock %}
 {% block content %}
-  <h2>Search Results for "{{ query }}"</h2>
-  
-  {% if results %}
-    <ul>
-      {% for tweet in results %}
-       <li> <div class="card my-2" style="width: 18rem;">
-              <img src="{{tweet.photo.url}}" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">{{tweet.user.username}}</h5>
-                <p class="card-text"> {{tweet.text}}
-                </p>
-                {%if tweet.user == user%}
-                <a href="{%url 'tweet_edit' tweet.id%}" class="btn btn-primary">Edit</a>
-                <a href="{%url 'tweet_delete' tweet.id%}" class="btn btn-danger">Delete</a>
-                {% endif %}
-              </div>
-            </div>
-      </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No tweets found.</p>
-  {% endif %}
+<section class="feed-intro search-intro"><div><span class="section-label">FIND YOUR NEXT FAVORITE</span><h2>{% if query %}A little search magic.{% else %}What are you curious about?{% endif %}</h2><p>{% if query %}Here’s what we found for <strong>“{{ query }}”</strong>.{% else %}Search posts and people from across the feed.{% endif %}</p></div><span class="intro-doodle">⌕</span></section>
+{% if query %}<div class="feed-heading"><span>Search results</span><span class="feed-count">{{ results|length }} found <i></i></span></div><section class="feed-list" aria-label="Search results">{% for tweet in results %}<article class="post-card" data-reveal><div class="post-top"><span class="avatar">{{ tweet.user.username|first|upper }}</span><div class="post-byline"><strong>{{ tweet.user.username }}</strong><span>@{{ tweet.user.username|slugify }} <i>·</i> <time datetime="{{ tweet.created_at|date:'c' }}">{{ tweet.created_at|timesince }} ago</time></span></div></div><p class="post-copy">{{ tweet.text|linebreaksbr }}</p>{% if tweet.photo %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" loading="lazy"></div>{% endif %}<div class="post-footer"><span class="post-reaction">✦ <span>Send some love</span></span><div class="post-owner-actions">{% if tweet.user == user %}<a href="{% url 'tweet_edit' tweet.id %}">Edit <span>↗</span></a><a class="delete-link" href="{% url 'tweet_delete' tweet.id %}">Delete <span>×</span></a>{% endif %}</div><span class="post-time">{{ tweet.created_at|date:"M j" }}</span></div></article>{% empty %}<div class="empty-state"><span class="empty-orbit">⌕</span><h3>No matches just yet.</h3><p>Try another name or phrase and we’ll have another look.</p><a class="quiet-link" href="{% url 'tweet_list' %}">Back to the feed <span>↗</span></a></div>{% endfor %}</section>{% endif %}
 {% endblock %}
+
