@@ -26,10 +26,12 @@ SECRET_KEY = 'django-insecure-kdz561bj%1o7^x&ncq2+wj^j=slb6hl1hmhtuuj&b$c2aq+-g4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1' ]
+ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1','chai-chatter.ajeetrawat.me' ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://mydjangotweet.onrender.com',  # your deployed domain
+    'https://mydjangotweet.onrender.com',
+    'https://chai-chatter.ajeetrawat.me',
+    # your deployed domain
 ]
 # Application definition
 
