@@ -1,10 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}
-login
-{% endblock %}
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button class="btn btn-primary">Register</button> 
-{% endblock %}
+{% block title %}Join the conversation{% endblock %}
+{% block page_heading %}Make yourself at home{% endblock %}
+{% block content %}<section class="auth-card register-card" data-reveal><div class="auth-art"><span>✳</span><i>✦</i></div><span class="section-label">GOOD TO HAVE YOU</span><h2>Let’s meet you.</h2><p>Make an account and find your corner of the conversation.</p><form method="post" class="post-form">{% csrf_token %}{% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="field-hint">{{ field.help_text|safe }}</div>{% endif %}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}</div>{% endfor %}<button class="primary-button auth-submit" type="submit">Create my account <span>↗</span></button></form><p class="auth-switch">Already one of us? <a href="{% url 'login' %}">Log in <span>↗</span></a></p></section>{% endblock %}
+
