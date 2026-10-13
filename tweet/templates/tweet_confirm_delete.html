@@ -1,12 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}
-chai or tweet 
-{% endblock %}
-{% block content %}
-<h1 class="text-centre text-white mt-4">Are you sure to delete the tweet</h1>
+{% block title %}Delete post{% endblock %}
+{% block page_heading %}Delete post{% endblock %}
+{% block content %}<section class="delete-page" data-reveal><span class="delete-orbit">×</span><span class="section-label">A QUICK CHECK</span><h2>Let this post go?</h2><p>This will permanently remove your post. There’s no way to bring it back.</p><div class="delete-preview"><span class="avatar">{{ tweet.user.username|first|upper }}</span><div><strong>{{ tweet.user.username }}</strong><p>{{ tweet.text|truncatechars:140 }}</p></div></div><form method="post" class="delete-actions">{% csrf_token %}<a class="quiet-link" href="{% url 'tweet_list' %}">Keep it</a><button class="danger-button" type="submit">Delete post <span>×</span></button></form></section>{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    <button class="btn btn-danger">delete</button>
-    <a class="btn btn-success" href="{% url 'tweet_list'%}">Cancel</a>
-{% endblock %}
