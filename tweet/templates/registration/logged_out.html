@@ -1,8 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}
-Logged out
-{% endblock %}
-{% block content %}
+{% block title %}See you soon{% endblock %}
+{% block page_heading %}See you soon{% endblock %}
+{% block content %}<section class="auth-card" data-reveal><div class="auth-art"><span>✳</span><i>✦</i></div><span class="section-label">UNTIL NEXT TIME</span><h2>You’ve logged out.</h2><p>Your corner will be right here when you’re ready to come back.</p><a class="primary-button auth-submit" href="{% url 'login' %}">Log back in <span>↗</span></a><p class="auth-switch">Want to browse first? <a href="{% url 'tweet_list' %}">Back to the feed <span>↗</span></a></p></section>{% endblock %}
 
-<p>You have been logged out <a href="{%url 'login'%}">Login Here</a></p>
-{% endblock %}
