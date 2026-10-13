@@ -1,20 +1,13 @@
 {% extends "layout.html" %}
-{% block title %}
-chai or tweet 
-{% endblock %}
+{% block title %}{% if form.instance.pk %}Edit post{% else %}Create a post{% endif %}{% endblock %}
+{% block page_heading %}{% if form.instance.pk %}Edit your post{% else %}Create a post{% endif %}{% endblock %}
 {% block content %}
-<h1 class="text-centre text-white mt-4">Welcome to django tweet</h1>
-
-<h2>{% if form.instance.pk%} 
-    Edit Tweet
-    {% else %} 
-    Create Tweet
-    {% endif %}
-    <form method="post" enctype="multipart/form-data" class="form">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button class="btn btn-warning" type="submit">Submit</button>
-    </form>
-    <a href="{%url 'tweet_list' %}">Bact to Tweet</a>   
-</h2>    
+<section class="form-page" data-reveal><div class="form-intro"><span class="section-label">YOUR SPACE TO SAY IT</span><h2>{% if form.instance.pk %}Make it feel right.{% else %}Put it out there.{% endif %}</h2><p>Little thoughts can make someone’s day.</p></div>
+<form method="post" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+{% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+<div class="form-field"><label for="{{ form.text.id_for_label }}">Your message</label>{{ form.text }}{% if form.text.errors %}<div class="field-error">{{ form.text.errors }}</div>{% endif %}<span class="field-hint">Up to 240 characters. Keep it you.</span></div>
+<div class="form-field"><label for="{{ form.photo.id_for_label }}">Add a photo <span class="optional-label">OPTIONAL</span></label><label class="upload-zone" for="{{ form.photo.id_for_label }}"><span class="upload-icon">↥</span><span><strong class="file-label">Choose a photo</strong><small>JPG, PNG, GIF or WebP</small></span></label>{{ form.photo }}{% if form.photo.errors %}<div class="field-error">{{ form.photo.errors }}</div>{% endif %}</div>
+<div class="form-actions"><a href="{% url 'tweet_list' %}" class="quiet-link">Cancel</a><button class="primary-button" type="submit">{% if form.instance.pk %}Save changes{% else %}Share your post{% endif %} <span>↗</span></button></div>
+</form></section>
 {% endblock %}
+
