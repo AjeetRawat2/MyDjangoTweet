@@ -2,144 +2,47 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Freckle+Face&display=swap" rel="stylesheet">
-
-    <title>
-        {% block title %}
-        Chai aur django
-        {% endblock %}</title>
-        <style>
-        {% block style %}
-          body {
-            background-color: #000000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-          }
-          .navbar-brand {
-            font-family: 'Freckle Face', cursive;
-            color: #00ccff; /* Light blue */
-            font-size: 2.5rem;
-            text-shadow: 2px 2px 4px black;
-          }
-        
-          .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background-color: #242424;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-          }
-        
-          h1 {
-            text-align: center;
-            color: #eaeaea;
-            font-weight: 600;
-          }
-        
-          h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #bebcbc;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-          }
-        
-          label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-            color: #d6d6d6;
-          }
-        
-          textarea,
-          input[type="file"] {
-            width: 100%;
-            margin-top: 5px;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            transition: 0.3s border-color;
-          }
-        
-          textarea:focus,
-          input[type="file"]:focus {
-            border-color: #007bff;
-            outline: none;
-          }
-          
-        
-         
-        
-          a {
-            display: inline-block;
-            color: #007bff;
-            text-decoration: none;
-          }
-        
-          a:hover {
-            text-decoration: underline;
-          }
-          @media (max-width: 768px) {
-            .form-control me-2 mx-10 {
-              margin-left:0rem;
-              padding:.375rem 10.75rem;
-            }
-          }
-          {% endblock %}
-        </style>
-        
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b12">
+  <title>{% block title %}Chai &amp; Chatter{% endblock %} · Chai &amp; Chatter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="{% static 'tweet/css/app.css' %}" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-  <img src="{% static 'Group6.png' %}" alt="image" style="width: 28px; border-radius: 4px; margin: 9px;">
-  <a class="navbar-brand"href="{% url 'tweet_list' %}"
-     style="font-family: 'Freckle Face', cursive; color: #00ccff; font-size: 2.5rem; text-shadow: 2px 2px 4px black;">
-     Django Tweet
-  </a>
-
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-          aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-
-    <!-- Responsive Search Form -->
-    <form class="d-flex w-100 justify-content-end flex-wrap mt-2 mt-lg-0"
-          role="search" action="{% url 'search_tweets' %}" method="get">
-      <input class="form-control me-2 flex-grow-1 flex-md-grow-0"
-             type="search" name="q" placeholder="Search Tweets"
-             aria-label="Search"
-             style="min-width: 200px; max-width: 400px;">
-      <button class="btn btn-outline-success mt-2 mt-md-0" type="submit">Search</button>
-    </form>
-      <a class="btn btn-primary mx-2 " href="{% url 'tweet_create'%}">Create </a></button>
-            {%if user.is_authenticated %}
-            <form method="post" action="{% url 'logout'%}">
-              {% csrf_token %}
-              <button class="btn btn-danger mx-2" type="submit">Logout</button>
-
-            </form> 
-            {% else%}
-            <a href="{%url 'login'%}" class="btn btn-success mx-2">Login</a> 
-
-            {%endif%}
-          </div>
-        </div>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{% url 'tweet_list' %}" aria-label="Chai and Chatter home">
+        <span class="brand-mark">c<span>·</span></span>
+        <span class="brand-name">chai<span>&amp;</span>chatter</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-item {% if request.resolver_match.url_name == 'tweet_list' %}is-active{% endif %}" href="{% url 'tweet_list' %}"><span class="nav-icon">⌂</span><span>Home</span></a>
+        <a class="nav-item {% if request.resolver_match.url_name == 'search_tweets' %}is-active{% endif %}" href="{% url 'search_tweets' %}"><span class="nav-icon">⌕</span><span>Explore</span></a>
+        <a class="nav-item" href="{% url 'tweet_create' %}"><span class="nav-icon">✳</span><span>Create a post</span></a>
       </nav>
-    <div class="container text-centre">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+      <a class="sidebar-compose" href="{% url 'tweet_create' %}"><span>+</span><span>Share a thought</span></a>
+      <div class="sidebar-note"><span class="note-spark">✦</span><p>A little corner of the internet to make your own.</p></div>
+      <div class="sidebar-account">
+        <span class="avatar avatar-small">{% if user.is_authenticated %}{{ user.username|first|upper }}{% else %}C{% endif %}</span>
+        <div class="account-copy"><strong>{% if user.is_authenticated %}{{ user.username }}{% else %}Welcome, friend{% endif %}</strong><span>{% if user.is_authenticated %}Your little corner{% else %}Join the conversation{% endif %}</span></div>
+        {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="icon-button logout-button" aria-label="Log out" title="Log out">↗</button></form>{% else %}<a class="icon-button" href="{% url 'login' %}" aria-label="Log in">↗</a>{% endif %}
+      </div>
+    </aside>
+    <main class="main-column">
+      <header class="topbar"><div><span class="eyebrow">YOUR DAILY DOSE OF GOOD VIBES</span><h1>{% block page_heading %}The feed{% endblock %}</h1></div><div class="topbar-actions"><form class="search-form" action="{% url 'search_tweets' %}" method="get" role="search"><span>⌕</span><input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Find your people" aria-label="Search posts"><kbd>↵</kbd></form>{% if user.is_authenticated %}<a class="top-avatar" href="{% url 'tweet_create' %}" aria-label="Create a post">{{ user.username|first|upper }}</a>{% else %}<a class="top-login" href="{% url 'login' %}">Log in <span>↗</span></a>{% endif %}</div></header>
+      {% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% block content %}{% endblock %}
+      <footer class="mobile-footer"><a href="{% url 'tweet_list' %}">⌂<span>Home</span></a><a href="{% url 'search_tweets' %}">⌕<span>Explore</span></a><a href="{% url 'tweet_create' %}">✳<span>Create</span></a>{% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button>↗<span>Log out</span></button></form>{% else %}<a href="{% url 'login' %}">◉<span>Log in</span></a>{% endif %}</footer>
+    </main>
+    <aside class="right-rail"><section class="rail-card welcome-card"><span class="rail-kicker">A FRIENDLY REMINDER</span><div class="welcome-art"><span class="sunburst">✳</span><span class="sparkle sparkle-a">✦</span><span class="sparkle sparkle-b">✦</span></div><h2>Good things grow<br>when we share.</h2><p>Drop by, say hello, and leave a little kindness in the feed.</p><a href="{% url 'tweet_create' %}" class="text-link">Share something nice <span>↗</span></a></section><section class="rail-card mini-card"><span class="online-dot"></span><div><strong>Your space, your pace.</strong><p>Made for small moments and big ideas.</p></div></section><p class="rail-foot">A cozy corner of your internet <span>✦</span></p></aside>
+  </div>
+  <script src="{% static 'tweet/js/app.js' %}" defer></script>
 </body>
 </html>
+
