@@ -116,7 +116,10 @@ def toggle_like(request, tweet_id):
     like, created = Like.objects.get_or_create(tweet=tweet, user=request.user)
     if not created:
         like.delete()
-    return _safe_return(request)
+    response = _safe_return(request)
+    # Return to this post after the form redirect instead of resetting the feed to the top.
+    response['Location'] = f"{response['Location'].split('#', 1)[0]}#tweet-{tweet.pk}"
+    return response
 
 
 @login_required
