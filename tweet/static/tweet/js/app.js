@@ -17,6 +17,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.feed-list .post-card').forEach((card, index) => {
     card.style.setProperty('--post-order', index);
+    card.querySelectorAll('.comment-item').forEach((comment, commentIndex) => {
+      comment.style.setProperty('--comment-order', commentIndex);
+    });
+  });
+
+  document.querySelectorAll('.like-button[type="submit"]').forEach((button) => {
+    button.addEventListener('click', () => {
+      button.classList.remove('is-animating');
+      requestAnimationFrame(() => button.classList.add('is-animating'));
+    });
+    button.addEventListener('animationend', () => button.classList.remove('is-animating'));
+  });
+
+  document.querySelectorAll('.comment-form').forEach((form) => {
+    const textarea = form.querySelector('textarea');
+    if (!textarea) return;
+
+    const resizeTextarea = () => {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+    };
+    textarea.addEventListener('input', resizeTextarea);
+    resizeTextarea();
+
+    form.addEventListener('submit', () => {
+      if (textarea.value.trim()) form.classList.add('is-sending');
+    });
   });
 
   const upload = document.querySelector('input[type="file"]');
