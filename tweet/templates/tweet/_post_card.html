@@ -16,9 +16,9 @@
   {% if tweet.photo %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" loading="lazy"></div>{% endif %}
   <div class="social-actions">
     {% if user.is_authenticated %}
-      <form method="post" action="{% url 'toggle_like' tweet.id %}">{% csrf_token %}<button class="like-button{% if tweet.is_liked %} is-liked{% endif %}" type="submit" aria-label="{% if tweet.is_liked %}Unlike{% else %}Like{% endif %} this post"><span class="like-heart">{% if tweet.is_liked %}♥{% else %}♡{% endif %}</span><span>{% if tweet.is_liked %}Liked{% else %}Like{% endif %}</span><span class="action-count">{{ tweet.like_count }}</span></button></form>
+      <form method="post" action="{% url 'toggle_like' tweet.id %}">{% csrf_token %}<button class="like-button{% if tweet.is_liked %} is-liked{% endif %}" type="submit" aria-label="{% if tweet.is_liked %}Unlike{% else %}Like{% endif %} this post"><span class="like-heart" aria-hidden="true">{% if tweet.is_liked %}♥{% else %}♡{% endif %}</span><span class="action-label">{% if tweet.is_liked %}Liked{% else %}Like{% endif %}</span><span class="action-count" aria-label="{{ tweet.like_count }} likes">{{ tweet.like_count }}</span></button></form>
     {% else %}<a class="like-button" href="{% url 'login' %}"><span class="like-heart">♡</span><span>Like</span><span class="action-count">{{ tweet.like_count }}</span></a>{% endif %}
-    <a class="comment-count" href="#comments-{{ tweet.id }}"><span>▢</span> {{ tweet.comment_count }} {% if tweet.comment_count == 1 %}comment{% else %}comments{% endif %}</a>
+    <a class="comment-count" href="#comments-{{ tweet.id }}" aria-label="View {{ tweet.comment_count }} comments"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-6.5A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg><span class="action-label">{{ tweet.comment_count }} {% if tweet.comment_count == 1 %}comment{% else %}comments{% endif %}</span></a>
     {% if tweet.user == user %}<div class="post-owner-actions"><a href="{% url 'tweet_edit' tweet.id %}">Edit <span>↗</span></a><a class="delete-link" href="{% url 'tweet_delete' tweet.id %}">Delete <span>×</span></a></div>{% endif %}
   </div>
   <section class="comments-panel" id="comments-{{ tweet.id }}" aria-label="Comments on {{ tweet.user.username }}’s post">
@@ -26,7 +26,7 @@
       <div class="comment-item"><span class="comment-avatar">{{ comment.user.username|first|upper }}</span><div class="comment-bubble"><strong>{{ comment.user.username }}</strong><p>{{ comment.text|linebreaksbr }}</p><time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|timesince }} ago</time></div></div>
     {% endfor %}
     {% if user.is_authenticated %}
-      <form class="comment-form" method="post" action="{% url 'add_comment' tweet.id %}">{% csrf_token %}<span class="comment-avatar current-avatar">{{ user.username|first|upper }}</span>{{ comment_form.text }}<button type="submit" aria-label="Post comment" title="Post comment">↗</button></form>
+      <form class="comment-form" method="post" action="{% url 'add_comment' tweet.id %}">{% csrf_token %}<span class="comment-avatar current-avatar">{{ user.username|first|upper }}</span>{{ comment_form.text }}<button type="submit" aria-label="Post comment" title="Post comment"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 17 8-17 8 3-8-3-8Z"/><path d="M7 12h14"/></svg></button></form>
     {% else %}<p class="comment-signin"><a href="{% url 'login' %}">Log in</a> to join the conversation.</p>{% endif %}
   </section>
 </article>
