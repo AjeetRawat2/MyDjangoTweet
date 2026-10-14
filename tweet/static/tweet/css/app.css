@@ -17,3 +17,43 @@
 .social-actions{display:flex;align-items:center;gap:18px;min-height:43px;padding:8px 0;border-top:1px solid rgba(206,220,248,.055)}.social-actions form{margin:0}.like-button,.comment-count{display:inline-flex;align-items:center;gap:6px;padding:3px 0;border:0;background:transparent;color:#919aab;font-size:11px;text-decoration:none;cursor:pointer;transition:color .2s,transform .2s}.like-button:hover,.comment-count:hover{color:var(--pink);transform:translateY(-1px);text-decoration:none}.like-button.is-liked{color:var(--pink)}.like-heart{font-size:18px;line-height:1}.action-count{color:#788294;font-size:10px}.comment-count>span{font-size:17px}.social-actions .post-owner-actions{margin-left:auto}
 .comments-panel{display:grid;gap:9px;padding-top:10px;border-top:1px solid rgba(206,220,248,.055)}.comment-item{display:flex;align-items:flex-start;gap:8px}.comment-avatar{flex:0 0 auto;width:27px;height:27px;display:grid;place-items:center;border-radius:10px;background:linear-gradient(145deg,#b8a7ff,#8470d8);color:#171325;font:800 10px 'Manrope',sans-serif}.comment-bubble{min-width:0;flex:1;padding:7px 10px;border-radius:11px;background:rgba(255,255,255,.035)}.comment-bubble strong{font-size:10px}.comment-bubble p{margin:2px 0;color:#d5d8df;font-size:11px;line-height:1.5;overflow-wrap:anywhere}.comment-bubble time{color:#727c8e;font-size:9px}.comment-form{display:flex;align-items:center;gap:8px;margin:2px 0 3px}.comment-form textarea{flex:1;min-width:0;min-height:34px;max-height:90px;resize:vertical;padding:8px 11px;border:1px solid var(--line);border-radius:999px;outline:0;background:rgba(255,255,255,.025);color:var(--ink);font-size:11px;transition:border-color .2s,box-shadow .2s}.comment-form textarea:focus{border-color:rgba(210,245,106,.5);box-shadow:0 0 0 3px rgba(210,245,106,.05)}.comment-form textarea::placeholder{color:#778092}.comment-form>button{width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:10px;background:var(--lime);color:#171b0c;font-weight:800;cursor:pointer;transition:transform .2s,box-shadow .2s}.comment-form>button:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(210,245,106,.2)}.current-avatar{background:linear-gradient(145deg,#d5ef86,#89b947)}.comment-signin{margin:1px 0 5px 35px;color:var(--muted);font-size:10px}.comment-signin a,.forgot-link{color:var(--lime);font-weight:700}.comment-signin a:hover,.forgot-link:hover{text-decoration:underline}.forgot-link{justify-self:end;margin-top:-8px;font-size:10px}.auth-divider{display:flex;align-items:center;gap:12px;margin:17px 0;color:#737d8f;font-size:9px;font-weight:700;letter-spacing:1px}.auth-divider::before,.auth-divider::after{content:"";height:1px;flex:1;background:var(--line)}.google-button{min-height:43px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(206,220,248,.15);border-radius:12px;background:rgba(255,255,255,.035);color:#eceef2;font-size:12px;font-weight:700;transition:border-color .2s,background .2s,transform .2s}.google-button:hover{transform:translateY(-2px);border-color:rgba(206,220,248,.28);background:rgba(255,255,255,.07);text-decoration:none}.google-g{font:bold 17px Arial,sans-serif;color:#4285f4}
 
+
+/* Feed reactions and replies */
+.social-actions{gap:10px;padding:11px 0 12px}
+.social-actions>form{display:flex}
+.like-button,.comment-count{position:relative;min-height:38px;gap:8px;padding:0 12px;border:1px solid transparent;border-radius:12px;background:rgba(255,255,255,.025);color:#a4adbd;font-size:11px;font-weight:700;transition:transform .22s var(--ease),color .22s,background .22s,border-color .22s,box-shadow .22s}
+.like-button:hover,.comment-count:hover{transform:translateY(-2px);border-color:rgba(255,156,199,.16);background:rgba(255,156,199,.075);color:#ffc0d9;text-decoration:none}
+.like-button:focus-visible,.comment-count:focus-visible,.comment-form>button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.like-button:active,.comment-count:active{transform:scale(.94)}
+.like-button.is-liked{border-color:rgba(255,156,199,.14);background:rgba(255,156,199,.09);color:#ff9cc7}
+.like-heart{display:grid;place-items:center;width:20px;height:20px;color:inherit;font-size:20px;transition:transform .25s var(--ease),filter .25s}
+.like-button:hover .like-heart{transform:scale(1.18)}
+.like-button.is-animating .like-heart{animation:heart-pop .52s var(--ease)}
+.like-button.is-liked.is-animating .like-heart{filter:drop-shadow(0 0 8px rgba(255,110,166,.65))}
+.action-count{min-width:19px;padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.075);color:#c0c6d2;font-size:9px;text-align:center;transition:transform .22s var(--ease),background .22s}
+.like-button.is-liked .action-count{background:rgba(255,156,199,.14);color:#ffc0d9}
+.like-button.is-animating .action-count{animation:count-pop .36s var(--ease)}
+.comment-count svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8;transition:transform .25s var(--ease)}
+.comment-count:hover svg{transform:translateY(-1px) rotate(-7deg)}
+.comments-panel{gap:11px;padding:14px 0 4px;scroll-margin-top:18px}
+.comment-item{animation:comment-arrive .4s var(--ease) both;animation-delay:calc(min(var(--comment-order,0),5)*45ms)}
+.comment-bubble{padding:9px 12px;border:1px solid rgba(206,220,248,.04);border-radius:5px 14px 14px 14px;background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.025));transition:border-color .22s,background .22s,transform .22s var(--ease)}
+.comment-item:hover .comment-bubble{transform:translateX(2px);border-color:rgba(206,220,248,.1);background:rgba(255,255,255,.055)}
+.comment-bubble p{font-size:12px;line-height:1.6}
+.comment-form{gap:10px;margin-top:3px;padding:6px;border:1px solid rgba(206,220,248,.09);border-radius:16px;background:rgba(255,255,255,.025);transition:border-color .22s,background .22s,box-shadow .22s}
+.comment-form:focus-within{border-color:rgba(210,245,106,.32);background:rgba(210,245,106,.025);box-shadow:0 0 0 4px rgba(210,245,106,.035)}
+.comment-form textarea{min-height:36px;max-height:120px;padding:9px 10px;border:0;border-radius:10px;background:transparent;font-size:12px;line-height:1.45;resize:none}
+.comment-form textarea:focus{border:0;box-shadow:none}
+.comment-form>button{flex:0 0 auto;width:36px;height:36px;border-radius:12px;box-shadow:0 4px 14px rgba(210,245,106,.13)}
+.comment-form>button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8;transition:transform .25s var(--ease)}
+.comment-form>button:hover svg{transform:translate(2px,-2px)}
+.comment-form>button:active{transform:scale(.9)}
+.comment-form.is-sending>button svg{animation:send-nudge .3s var(--ease)}
+@keyframes heart-pop{0%{transform:scale(1)}35%{transform:scale(1.55) rotate(-12deg)}68%{transform:scale(.88) rotate(5deg)}100%{transform:scale(1)}}
+@keyframes count-pop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes comment-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes send-nudge{50%{transform:translate(3px,-3px) scale(1.08)}}
+@media(max-width:700px){.social-actions{gap:7px}.like-button,.comment-count{min-height:36px;gap:6px;padding:0 9px;font-size:10px}.action-count{padding:2px 5px}.comments-panel{padding-top:12px}.comment-form{gap:7px;padding:5px}.comment-avatar{width:30px;height:30px;border-radius:11px}}
+.top-login{min-height:38px;display:inline-flex;align-items:center;gap:6px;padding:0 13px;border:1px solid rgba(210,245,106,.28);border-radius:12px;background:rgba(210,245,106,.09);color:var(--lime);transition:transform .22s var(--ease),background .22s,border-color .22s,box-shadow .22s}
+.top-login:hover{transform:translateY(-2px);border-color:rgba(210,245,106,.5);background:rgba(210,245,106,.15);box-shadow:0 7px 22px rgba(210,245,106,.1)}
+.top-login:active{transform:scale(.96)}
