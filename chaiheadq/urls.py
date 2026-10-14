@@ -26,7 +26,9 @@ urlpatterns = [
     path('',include('tweet.urls')),
      path('tweet/',include('tweet.urls')),
     path('accounts/',include('django.contrib.auth.urls')),
+    path('accounts/',include('allauth.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += static('/tweet/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
 urlpatterns += static('/tweet/search/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
+

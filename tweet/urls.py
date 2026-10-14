@@ -9,4 +9,8 @@ urlpatterns = [
     path('<int:tweet_id>/edit/',views.tweet_edit,name='tweet_edit'),
     path('register/',views.register,name='register'),
     path('search/', views.search_tweets, name='search_tweets'),
+    path('<int:tweet_id>/like/', views.toggle_like, name='toggle_like'),
+    path('<int:tweet_id>/comments/', views.add_comment, name='add_comment'),
+    path('users/<int:user_id>/follow/', views.toggle_follow, name='toggle_follow'),
 ]
+

@@ -11,12 +11,7 @@
 <div class="feed-heading"><span>Latest posts</span><span class="feed-count">{{ tweets|length }} {% if tweets|length == 1 %}post{% else %}posts{% endif %} <i></i></span></div>
 <section class="feed-list" aria-label="Latest posts">
 {% for tweet in tweets %}
-  <article class="post-card" data-reveal>
-    <div class="post-top"><span class="avatar">{{ tweet.user.username|first|upper }}</span><div class="post-byline"><strong>{{ tweet.user.username }}</strong><span>@{{ tweet.user.username|slugify }} <i>·</i> <time datetime="{{ tweet.created_at|date:'c' }}">{{ tweet.created_at|timesince }} ago</time></span></div><span class="post-menu-dot" aria-hidden="true">···</span></div>
-    <p class="post-copy">{{ tweet.text|linebreaksbr }}</p>
-    {% if tweet.photo %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" loading="lazy"></div>{% endif %}
-    <div class="post-footer"><span class="post-reaction" aria-label="A little appreciation">✦ <span>Send some love</span></span><div class="post-owner-actions">{% if tweet.user == user %}<a href="{% url 'tweet_edit' tweet.id %}" aria-label="Edit post">Edit <span>↗</span></a><a class="delete-link" href="{% url 'tweet_delete' tweet.id %}" aria-label="Delete post">Delete <span>×</span></a>{% endif %}</div><span class="post-time">{{ tweet.created_at|date:"M j" }}</span></div>
-  </article>
+  {% include "tweet/_post_card.html" with tweet=tweet %}
 {% empty %}
   <div class="empty-state"><span class="empty-orbit">✳</span><h3>It’s quiet in here.</h3><p>Be the first to share a little something with the community.</p><a class="primary-button" href="{% url 'tweet_create' %}">Write the first post <span>↗</span></a></div>
 {% endfor %}

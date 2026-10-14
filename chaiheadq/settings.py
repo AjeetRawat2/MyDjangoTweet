@@ -32,10 +32,16 @@ ALLOWED_HOSTS = [
     'chai-chatter.ajeetrawat.me',
 ]
 
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
+
 CSRF_TRUSTED_ORIGINS = [
     'https://mydjangotweet.onrender.com',
     'https://chai-chatter.ajeetrawat.me',
 ]
+
+# Render terminates HTTPS before forwarding requests to Django.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -48,6 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tweet',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -56,9 +66,28 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
+    SOCIALACCOUNT_PROVIDERS = {
+        'google': {
+            'APPS': [{
+                'client_id': GOOGLE_CLIENT_ID,
+                'secret': GOOGLE_CLIENT_SECRET,
+                'key': '',
+            }],
+            'SCOPE': ['profile', 'email'],
+            'AUTH_PARAMS': {'access_type': 'online'},
+        },
+    }
 
 ROOT_URLCONF = 'chaiheadq.urls'
 
@@ -72,6 +101,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'tweet.context_processors.auth_features',
             ],
         },
     },
@@ -138,4 +168,17 @@ LOGIN_URL ='/accounts/login'
 
 LOGIN_REDIRECT_URL ='/tweet/'
 LOGOUT_REDIRECT_URL ='/tweet/'
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true').lower() in ('1', 'true', 'yes')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Chai & Chatter <noreply@ajeetrawat.me>')
+EMAIL_BACKEND = (
+    'django.core.mail.backends.smtp.EmailBackend'
+    if EMAIL_HOST
+    else 'django.core.mail.backends.console.EmailBackend'
+)
+PASSWORD_RESET_TIMEOUT = 86400
 
