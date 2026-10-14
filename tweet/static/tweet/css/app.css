@@ -133,3 +133,41 @@
 @keyframes follow-sheen{to{transform:translateX(560%) skewX(-18deg)}}
 @keyframes send-hover{50%{transform:translate(2px,-2px)}}
 @media(prefers-reduced-motion:reduce){.like-button:hover .like-icon,.comment-count:hover svg,.follow-button:hover::after,.comment-form>button:hover svg{animation:none!important}.follow-button:hover{transform:none}}
+
+/* Final polish: glass reaction dock and expressive follow states */
+.social-actions{position:relative;gap:11px;min-height:66px;margin-top:4px;padding:10px 12px;border:1px solid rgba(205,218,244,.09);border-radius:17px;background:linear-gradient(115deg,rgba(255,255,255,.045),rgba(255,255,255,.014) 52%,rgba(184,167,255,.035));box-shadow:inset 0 1px rgba(255,255,255,.035),0 8px 24px rgba(0,0,0,.14);backdrop-filter:blur(14px)}
+.social-actions::before{position:absolute;top:0;left:17px;width:48px;height:1px;content:"";background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+.social-actions>form{display:flex}
+.social-actions .post-owner-actions{margin-left:auto;align-items:center}
+.like-button,.comment-count{position:relative;isolation:isolate;width:44px;height:44px;min-width:44px;min-height:44px;overflow:visible;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));color:#d5d9e2;box-shadow:inset 0 1px rgba(255,255,255,.05),0 3px 8px rgba(0,0,0,.12);transition:transform .28s cubic-bezier(.18,.8,.25,1),border-color .24s,background .24s,color .2s,box-shadow .24s}
+.like-button::before,.comment-count::before{position:absolute;z-index:-1;inset:-1px;border-radius:inherit;content:"";background:radial-gradient(circle at 50% 120%,rgba(255,255,255,.16),transparent 68%);opacity:0;transition:opacity .25s}
+.like-button:hover,.comment-count:hover{transform:translateY(-3px) scale(1.06);border-color:rgba(255,255,255,.19);background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));color:white;box-shadow:inset 0 1px rgba(255,255,255,.12),0 9px 20px rgba(0,0,0,.28)}
+.like-button:hover::before,.comment-count:hover::before{opacity:1}
+.like-button:active,.comment-count:active{transform:translateY(0) scale(.92);transition-duration:.1s}
+.like-button.is-liked{border-color:rgba(255,48,64,.2);background:linear-gradient(145deg,rgba(255,48,64,.13),rgba(255,48,64,.045));color:#ff5363;box-shadow:inset 0 1px rgba(255,255,255,.055),0 3px 12px rgba(255,48,64,.09)}
+.like-button.is-liked:hover{border-color:rgba(255,72,88,.42);background:linear-gradient(145deg,rgba(255,48,64,.21),rgba(255,48,64,.08));color:#ff6975;box-shadow:inset 0 1px rgba(255,255,255,.1),0 8px 23px rgba(255,48,64,.18)}
+.like-icon,.comment-count svg{width:22px;height:22px;flex:0 0 22px}
+.like-icon{stroke-width:1.9;filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
+.like-button.is-liked .like-icon{fill:#ff3040;stroke:#ff5363;filter:drop-shadow(0 0 6px rgba(255,48,64,.35))}
+.like-button:not(.is-animating):hover .like-icon{animation:heart-hover .68s cubic-bezier(.18,.8,.25,1)}
+.comment-count svg{stroke-width:1.85}
+.comment-count:hover svg{animation:comment-hover .52s cubic-bezier(.18,.8,.25,1)}
+.like-button:focus-visible,.comment-count:focus-visible{outline:2px solid rgba(77,180,255,.9);outline-offset:4px}
+.follow-form{margin-left:auto}
+.follow-button{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:105px;min-height:40px;padding:0 16px;overflow:hidden;border:1px solid rgba(96,184,255,.5);border-radius:13px;background:linear-gradient(135deg,#42a5ff 0%,#1688f2 45%,#0875df 100%);color:#fff;font-size:11px;font-weight:800;letter-spacing:.1px;box-shadow:inset 0 1px rgba(255,255,255,.35),0 5px 13px rgba(0,130,255,.23);transition:transform .27s cubic-bezier(.18,.8,.25,1),box-shadow .25s,border-color .25s,background .25s,color .2s}
+.follow-button::before{position:relative;z-index:1;width:19px;height:19px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.36);border-radius:50%;background:rgba(255,255,255,.16);content:"+";font-size:15px;font-weight:500;line-height:1;transition:transform .28s,background .25s,border-color .25s}
+.follow-button::after{position:absolute;z-index:-1;inset:-60% auto -60% -55%;width:38%;content:"";background:linear-gradient(90deg,transparent,rgba(255,255,255,.48),transparent);transform:translateX(-180%) skewX(-18deg);pointer-events:none}
+.follow-button:hover{transform:translateY(-3px) scale(1.035);border-color:rgba(139,207,255,.82);background:linear-gradient(135deg,#55b0ff 0%,#278ff4 48%,#0b7ce7 100%);box-shadow:inset 0 1px rgba(255,255,255,.45),0 11px 26px rgba(0,130,255,.34)}
+.follow-button:hover::before{transform:rotate(90deg) scale(1.08);background:rgba(255,255,255,.24)}
+.follow-button:hover::after{animation:follow-sheen .72s ease-out}
+.follow-button:active{transform:translateY(-1px) scale(.96);box-shadow:inset 0 2px 5px rgba(0,0,0,.12),0 3px 8px rgba(0,130,255,.2)}
+.follow-button:focus-visible{outline:2px solid #74c1ff;outline-offset:4px}
+.follow-button.is-following{min-width:117px;border-color:rgba(221,229,245,.16);background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.045));color:#e8ebf2;box-shadow:inset 0 1px rgba(255,255,255,.08),0 4px 12px rgba(0,0,0,.16)}
+.follow-button.is-following::before{width:18px;height:18px;border-color:rgba(210,245,106,.25);background:rgba(210,245,106,.12);color:#d2f56a;content:"✓";font-size:11px}
+.follow-button.is-following:hover{transform:translateY(-2px);border-color:rgba(210,245,106,.34);background:linear-gradient(145deg,rgba(210,245,106,.13),rgba(255,255,255,.055));color:#f4f7ec;box-shadow:inset 0 1px rgba(255,255,255,.1),0 9px 22px rgba(0,0,0,.25)}
+.follow-button.is-following:hover::before{transform:scale(1.08)}
+.follow-button.is-following:hover::after{animation:none}
+.social-actions .post-owner-actions a{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:rgba(255,255,255,.025);transition:transform .2s,background .2s,border-color .2s}
+.social-actions .post-owner-actions a:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.07)}
+@media(max-width:700px){.social-actions{min-height:62px;gap:8px;padding:8px 9px;border-radius:15px}.like-button,.comment-count{width:41px;height:41px;min-width:41px;min-height:41px;border-radius:13px}.follow-button{min-width:94px;min-height:38px;padding:0 12px;border-radius:12px;font-size:10px}.follow-button.is-following{min-width:106px}.social-actions .post-owner-actions a{width:31px;height:31px}}
+@media(prefers-reduced-motion:reduce){.like-button:hover .like-icon,.comment-count:hover svg,.follow-button:hover::after{animation:none!important}.like-button:hover,.comment-count:hover,.follow-button:hover,.follow-button:active{transform:none}}
