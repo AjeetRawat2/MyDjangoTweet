@@ -85,3 +85,36 @@
 .comment-form>button{background:#0095f6;color:#fff;box-shadow:0 4px 14px rgba(0,149,246,.18)}
 .comment-form>button:hover{background:#1877f2;box-shadow:0 5px 16px rgba(0,149,246,.28)}
 @media(max-width:700px){.social-actions{gap:17px}.like-icon,.comment-count svg{width:22px;height:22px}.follow-button{min-height:31px;padding:0 13px}}
+
+/* Icon-only social actions with an Instagram-style comments overlay */
+.social-actions{gap:12px;min-height:48px;padding:8px 2px}
+.social-actions>form{display:flex}
+.like-button,.comment-count{width:42px;height:42px;min-width:42px;min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:0;padding:0;border:0;border-radius:11px;background:transparent;color:#d8dbe2}
+.like-button:hover,.comment-count:hover{transform:scale(1.08);border-color:transparent;background:rgba(255,255,255,.065);color:#fff}
+.like-button:active,.comment-count:active{transform:scale(.9)}
+.like-button.is-liked{border:0;background:transparent;color:#ff3040}
+.like-icon,.comment-count svg{display:block;width:24px;height:24px;flex:0 0 24px}
+.like-icon{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s var(--ease),fill .18s,stroke .18s,filter .2s}
+.like-button:hover .like-icon{transform:scale(1.08)}
+.like-button.is-liked .like-icon{fill:#ff3040;stroke:#ff3040}
+.like-button.is-animating .like-icon{animation:heart-pop .52s var(--ease)}
+.like-button.is-liked.is-animating .like-icon{filter:drop-shadow(0 0 7px rgba(255,48,64,.45))}
+.comment-count svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8;transition:transform .22s var(--ease)}
+.comment-count:hover svg{transform:scale(1.06)}
+.like-button:focus-visible,.comment-count:focus-visible,.comments-close:focus-visible{outline:2px solid #4db4ff;outline-offset:3px}
+.comments-dialog{width:min(520px,calc(100vw - 28px));max-width:none;max-height:min(82dvh,720px);padding:0;overflow:hidden;border:1px solid rgba(255,255,255,.13);border-radius:18px;background:#11141b;color:var(--ink);box-shadow:0 28px 100px rgba(0,0,0,.58)}
+.comments-dialog[open]{animation:comments-overlay-in .22s var(--ease) both}
+.comments-dialog::backdrop{background:rgba(3,5,10,.68);backdrop-filter:blur(5px);animation:comments-backdrop-in .2s ease-out both}
+.comments-dialog-head{height:56px;display:flex;align-items:center;justify-content:center;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.comments-dialog-head h2{margin:0;font:700 14px 'Manrope',sans-serif;letter-spacing:.1px}
+.comments-close{position:absolute;top:11px;right:12px;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:#cbd0da;font:400 26px/1 'DM Sans',sans-serif;cursor:pointer;transition:transform .2s var(--ease),background .2s,color .2s}
+.comments-close:hover{transform:rotate(90deg);background:rgba(255,255,255,.08);color:#fff}
+.comments-dialog .comments-panel{max-height:calc(min(82dvh,720px) - 56px);gap:12px;padding:14px 16px 16px;overflow-y:auto;overscroll-behavior:contain;border:0}
+.comments-dialog .comment-bubble{padding:8px 11px;border:0;border-radius:5px 14px 14px 14px;background:rgba(255,255,255,.055)}
+.comments-dialog .comment-bubble strong{color:#f4f5f7;font-size:11px}
+.comments-dialog .comment-bubble p{font-size:12px}
+.comments-dialog .comment-form{position:sticky;bottom:-16px;margin:5px -16px -16px;padding:12px 16px max(12px,env(safe-area-inset-bottom));border:0;border-top:1px solid rgba(255,255,255,.1);border-radius:0;background:rgba(17,20,27,.96);backdrop-filter:blur(18px)}
+@keyframes comments-overlay-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes comments-backdrop-in{from{opacity:0}to{opacity:1}}
+@media(max-width:700px){.comments-dialog{width:100%;max-width:none;max-height:90dvh;margin:auto 0 0;border-radius:20px 20px 0 0}.comments-dialog .comments-panel{max-height:calc(90dvh - 56px);padding-right:13px;padding-left:13px}.comments-dialog .comment-form{margin-right:-13px;margin-left:-13px;padding-right:13px;padding-left:13px}.like-button,.comment-count{width:40px;height:40px;min-width:40px;min-height:40px}}
+@media(prefers-reduced-motion:reduce){.comments-dialog[open],.comments-dialog::backdrop{animation:none!important}}
