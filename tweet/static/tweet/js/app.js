@@ -22,6 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.querySelectorAll('.comment-count[href^="#comments-"]').forEach((trigger) => {
+    trigger.addEventListener('click', (event) => {
+      const dialog = document.getElementById(trigger.hash.slice(1));
+      if (!dialog || typeof dialog.showModal !== 'function') return;
+      event.preventDefault();
+      dialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('.comments-dialog').forEach((dialog) => {
+    dialog.querySelector('[data-close-comments]')?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+
   document.querySelectorAll('.like-button[type="submit"]').forEach((button) => {
     button.addEventListener('click', () => {
       button.classList.remove('is-animating');
