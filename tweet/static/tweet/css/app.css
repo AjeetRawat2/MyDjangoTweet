@@ -57,3 +57,31 @@
 .top-login{min-height:38px;display:inline-flex;align-items:center;gap:6px;padding:0 13px;border:1px solid rgba(210,245,106,.28);border-radius:12px;background:rgba(210,245,106,.09);color:var(--lime);transition:transform .22s var(--ease),background .22s,border-color .22s,box-shadow .22s}
 .top-login:hover{transform:translateY(-2px);border-color:rgba(210,245,106,.5);background:rgba(210,245,106,.15);box-shadow:0 7px 22px rgba(210,245,106,.1)}
 .top-login:active{transform:scale(.96)}
+
+/* Instagram-inspired social controls */
+.social-actions{gap:22px;min-height:48px;padding:10px 2px}
+.like-button,.comment-count{min-height:38px;gap:8px;padding:2px 0;border:0;border-radius:0;background:transparent;color:#aeb4c0;font-weight:600}
+.like-button:hover,.comment-count:hover{transform:none;border-color:transparent;background:transparent;color:#f1f3f6}
+.like-button:active,.comment-count:active{transform:scale(.94)}
+.like-button.is-liked{border:0;background:transparent;color:#ff3040}
+.like-icon{width:23px;height:23px;overflow:visible;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8;transition:transform .22s var(--ease),fill .2s,stroke .2s,filter .2s}
+.like-button:hover .like-icon{transform:scale(1.12)}
+.like-button.is-liked .like-icon{fill:#ff3040;stroke:#ff3040}
+.like-button.is-animating .like-icon{animation:heart-pop .52s var(--ease)}
+.like-button.is-liked.is-animating .like-icon{filter:drop-shadow(0 0 7px rgba(255,48,64,.48))}
+.like-button .action-count{background:transparent;color:inherit;font-size:11px;font-weight:700}
+.like-button.is-liked .action-count{background:transparent;color:#ff6470}
+.comment-count svg{width:23px;height:23px;stroke-width:1.8}
+.comment-count:hover svg{transform:scale(1.1)}
+.comment-count .action-label{font-size:11px}
+.follow-button{min-height:32px;padding:0 15px;border:1px solid #0095f6;border-radius:8px;background:#0095f6;color:#fff;font-size:11px;font-weight:700;transition:transform .2s var(--ease),background .2s,border-color .2s,box-shadow .2s}
+.follow-button:hover{transform:translateY(-1px);border-color:#1877f2;background:#1877f2;box-shadow:0 5px 16px rgba(0,149,246,.2)}
+.follow-button:active{transform:scale(.95)}
+.follow-button:focus-visible{outline:2px solid #4db4ff;outline-offset:3px}
+.follow-button.is-following{border-color:rgba(255,255,255,.17);background:rgba(255,255,255,.08);color:#e6e8ec}
+.follow-button.is-following:hover{border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.13);color:#fff}
+.comment-form{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.035)}
+.comment-form:focus-within{border-color:rgba(0,149,246,.45);background:rgba(0,149,246,.035);box-shadow:0 0 0 4px rgba(0,149,246,.06)}
+.comment-form>button{background:#0095f6;color:#fff;box-shadow:0 4px 14px rgba(0,149,246,.18)}
+.comment-form>button:hover{background:#1877f2;box-shadow:0 5px 16px rgba(0,149,246,.28)}
+@media(max-width:700px){.social-actions{gap:17px}.like-icon,.comment-count svg{width:22px;height:22px}.follow-button{min-height:31px;padding:0 13px}}
