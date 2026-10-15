@@ -1,3 +1,6 @@
+from collections import Counter
+import re
+
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -49,9 +52,36 @@ def index(request):
     return render(request, 'index.html')
 
 
+def _trending_topics():
+    counts = Counter()
+    recent_texts = Tweet.objects.order_by('-created_at').values_list('text', flat=True)[:250]
+    for text in recent_texts:
+        counts.update(tag.casefold() for tag in re.findall(r'(?<!\w)#([\w]+)', text))
+    return [{'tag': tag, 'posts': count} for tag, count in counts.most_common(4)]
+
+
 def tweet_list(request):
+    feed_mode = 'following' if request.GET.get('feed') == 'following' else 'for-you'
     tweets = Tweet.objects.all().order_by('-created_at')
-    return render(request, 'tweet_list.html', _feed_context(tweets, request.user))
+    if feed_mode == 'following':
+        if request.user.is_authenticated:
+            tweets = tweets.filter(user__followers__follower=request.user)
+        else:
+            tweets = tweets.none()
+
+    feed_context = _feed_context(tweets, request.user)
+    suggested_users = User.objects.all()
+    if request.user.is_authenticated:
+        suggested_users = suggested_users.exclude(pk=request.user.pk)
+        followed_ids = Follow.objects.filter(follower=request.user).values_list('following_id', flat=True)
+        suggested_users = suggested_users.exclude(pk__in=followed_ids)
+    suggested_users = suggested_users.annotate(follower_count=Count('followers')).order_by('-follower_count', 'username')[:3]
+    feed_context.update({
+        'feed_mode': feed_mode,
+        'suggested_users': suggested_users,
+        'trending_topics': _trending_topics(),
+    })
+    return render(request, 'tweet_list.html', feed_context)
 
 
 @login_required

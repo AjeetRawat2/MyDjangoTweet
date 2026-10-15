@@ -2,19 +2,22 @@
 {% block title %}The feed{% endblock %}
 {% block page_heading %}The feed{% endblock %}
 {% block content %}
-<section class="feed-intro"><div><span class="section-label">A FRESH LITTLE TIMELINE</span><h2>What's happening?</h2><p>Catch up on the latest from your corner of the world.</p></div><span class="intro-doodle" aria-hidden="true">✳</span></section>
+<section class="cc-feed-intro"><div><span class="section-label">A FRESH LITTLE TIMELINE</span><h2>What’s happening?</h2><p>Catch up with your corner of the world.</p></div><span class="cc-intro-doodle" aria-hidden="true">☕</span></section>
+<nav class="cc-feed-tabs" aria-label="Choose your feed">
+  <a class="{% if feed_mode == 'for-you' %}is-active{% endif %}" href="{% url 'tweet_list' %}?feed=for-you">For you</a>
+  {% if user.is_authenticated %}<a class="{% if feed_mode == 'following' %}is-active{% endif %}" href="{% url 'tweet_list' %}?feed=following">Following</a>{% else %}<a href="{% url 'login' %}">Following</a>{% endif %}
+</nav>
 {% if user.is_authenticated %}
-<a class="composer-card" href="{% url 'tweet_create' %}"><span class="avatar composer-avatar">{{ user.username|first|upper }}</span><span class="composer-prompt">Got a thought to share, {{ user.username }}?</span><span class="composer-attach" aria-hidden="true">＋</span><span class="composer-submit">Post <span>↗</span></span></a>
+<a class="composer-card cc-composer" href="{% url 'tweet_create' %}"><span class="avatar composer-avatar">{{ user.username|first|upper }}</span><span class="composer-prompt">What’s on your mind, {{ user.username }}?</span><span class="composer-submit">Post <span>↗</span></span></a>
 {% else %}
-<div class="guest-prompt"><span class="avatar composer-avatar">✦</span><div><strong>Good conversations start with hello.</strong><span>Log in to share what’s on your mind.</span></div><a href="{% url 'login' %}">Join in <span>↗</span></a></div>
+<div class="guest-prompt cc-guest-prompt"><span class="avatar composer-avatar">✦</span><div><strong>Good conversations start with hello.</strong><span>Sign in to share what’s on your mind.</span></div><a href="{% url 'login' %}">Join in <span>↗</span></a></div>
 {% endif %}
-<div class="feed-heading"><span>Latest posts</span><span class="feed-count">{{ tweets|length }} {% if tweets|length == 1 %}post{% else %}posts{% endif %} <i></i></span></div>
-<section class="feed-list" aria-label="Latest posts">
+<div class="feed-heading cc-feed-heading"><span>{% if feed_mode == 'following' %}From people you follow{% else %}Latest posts{% endif %}</span><span class="feed-count">{{ tweets|length }} {% if tweets|length == 1 %}post{% else %}posts{% endif %} <i></i></span></div>
+<section class="feed-list cc-feed-list" aria-label="{% if feed_mode == 'following' %}Posts from people you follow{% else %}Latest posts{% endif %}">
 {% for tweet in tweets %}
   {% include "tweet/_post_card.html" with tweet=tweet %}
 {% empty %}
-  <div class="empty-state"><span class="empty-orbit">✳</span><h3>It’s quiet in here.</h3><p>Be the first to share a little something with the community.</p><a class="primary-button" href="{% url 'tweet_create' %}">Write the first post <span>↗</span></a></div>
+  <div class="empty-state cc-empty-state"><span class="empty-orbit">☕</span><h3>{% if feed_mode == 'following' %}Your feed is waiting for a little company.{% else %}It’s quiet in here.{% endif %}</h3><p>{% if feed_mode == 'following' %}Follow a few people to see their posts here.{% else %}Be the first to share a little something with the community.{% endif %}</p><a class="primary-button" href="{% if feed_mode == 'following' %}{% url 'search_tweets' %}{% else %}{% url 'tweet_create' %}{% endif %}">{% if feed_mode == 'following' %}Find people to follow{% else %}Write the first post{% endif %} <span>↗</span></a></div>
 {% endfor %}
 </section>
 {% endblock %}
-

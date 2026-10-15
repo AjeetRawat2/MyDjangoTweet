@@ -1,48 +1,88 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080b12">
+  <meta name="theme-color" content="#f7f8fa">
   <title>{% block title %}Chai &amp; Chatter{% endblock %} · Chai &amp; Chatter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'tweet/css/app.css' %}" rel="stylesheet">
+  <link href="{% static 'tweet/css/redesign.css' %}" rel="stylesheet">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <div class="ambient ambient-one" aria-hidden="true"></div>
-  <div class="ambient ambient-two" aria-hidden="true"></div>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <a class="brand" href="{% url 'tweet_list' %}" aria-label="Chai and Chatter home">
+  <div class="app-shell cc-shell">
+    <aside class="sidebar cc-sidebar">
+      <a class="brand cc-brand" href="{% url 'tweet_list' %}" aria-label="Chai &amp; Chatter home">
         <span class="brand-mark">c<span>·</span></span>
         <span class="brand-name">chai<span>&amp;</span>chatter</span>
       </a>
-      <nav class="main-nav" aria-label="Main navigation">
-        <a class="nav-item {% if request.resolver_match.url_name == 'tweet_list' %}is-active{% endif %}" href="{% url 'tweet_list' %}"><span class="nav-icon">⌂</span><span>Home</span></a>
-        <a class="nav-item {% if request.resolver_match.url_name == 'search_tweets' %}is-active{% endif %}" href="{% url 'search_tweets' %}"><span class="nav-icon">⌕</span><span>Explore</span></a>
-        <a class="nav-item" href="{% url 'tweet_create' %}"><span class="nav-icon">✳</span><span>Create a post</span></a>
+      <nav class="main-nav cc-nav" aria-label="Main navigation">
+        <a class="nav-item {% if request.resolver_match.url_name == 'tweet_list' %}is-active{% endif %}" href="{% url 'tweet_list' %}"><span class="nav-icon" aria-hidden="true">⌂</span><span>Home</span></a>
+        <a class="nav-item {% if request.resolver_match.url_name == 'search_tweets' %}is-active{% endif %}" href="{% url 'search_tweets' %}"><span class="nav-icon" aria-hidden="true">⌕</span><span>Explore</span></a>
+        <a class="nav-item" href="{% url 'tweet_create' %}"><span class="nav-icon" aria-hidden="true">＋</span><span>Create a post</span></a>
       </nav>
-      <a class="sidebar-compose" href="{% url 'tweet_create' %}"><span>+</span><span>Share a thought</span></a>
-      <div class="sidebar-note"><span class="note-spark">✦</span><p>A little corner of the internet to make your own.</p></div>
-      <div class="sidebar-account">
+      <a class="sidebar-compose cc-compose" href="{% url 'tweet_create' %}"><span>＋</span><span>Share a thought</span></a>
+      <button class="cc-theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme"><span class="cc-theme-icon" aria-hidden="true">☾</span><span class="cc-theme-label">Dark theme</span></button>
+      <div class="sidebar-note cc-sidebar-note"><span class="note-spark" aria-hidden="true">✦</span><p>A little corner of the internet to make your own.</p></div>
+      <div class="sidebar-account cc-account">
         <span class="avatar avatar-small">{% if user.is_authenticated %}{{ user.username|first|upper }}{% else %}C{% endif %}</span>
         <div class="account-copy"><strong>{% if user.is_authenticated %}{{ user.username }}{% else %}Welcome, friend{% endif %}</strong><span>{% if user.is_authenticated %}Your little corner{% else %}Join the conversation{% endif %}</span></div>
         {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="icon-button logout-button" aria-label="Log out" title="Log out">↗</button></form>{% else %}<a class="icon-button" href="{% url 'login' %}" aria-label="Log in">↗</a>{% endif %}
       </div>
     </aside>
-    <main class="main-column">
-      <header class="topbar"><div><span class="eyebrow">YOUR DAILY DOSE OF GOOD VIBES</span><h1>{% block page_heading %}The feed{% endblock %}</h1></div><div class="topbar-actions"><form class="search-form" action="{% url 'search_tweets' %}" method="get" role="search"><span>⌕</span><input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Find your people" aria-label="Search posts"><kbd>↵</kbd></form>{% if user.is_authenticated %}<a class="top-avatar" href="{% url 'tweet_create' %}" aria-label="Create a post">{{ user.username|first|upper }}</a>{% else %}<a class="top-login" href="{% url 'login' %}">Sign in <span>↗</span></a>{% endif %}</div></header>
+    <main class="main-column cc-main">
+      <header class="topbar cc-topbar">
+        <div class="cc-heading"><span class="eyebrow">YOUR DAILY DOSE OF GOOD VIBES</span><h1>{% block page_heading %}The feed{% endblock %}</h1></div>
+        <div class="topbar-actions cc-top-actions">
+          <form class="search-form cc-search" action="{% url 'search_tweets' %}" method="get" role="search"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search Chai &amp; Chatter" aria-label="Search posts"><kbd>↵</kbd></form>
+          <button class="cc-theme-toggle cc-theme-compact" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Change theme"><span class="cc-theme-icon" aria-hidden="true">☾</span></button>
+          {% if user.is_authenticated %}<span class="top-avatar cc-top-avatar" aria-label="Signed in as {{ user.username }}">{{ user.username|first|upper }}</span>{% else %}<a class="top-login" href="{% url 'login' %}">Sign in <span>↗</span></a>{% endif %}
+        </div>
+      </header>
       {% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
       {% block content %}{% endblock %}
-      <footer class="mobile-footer"><a href="{% url 'tweet_list' %}">⌂<span>Home</span></a><a href="{% url 'search_tweets' %}">⌕<span>Explore</span></a><a href="{% url 'tweet_create' %}">✳<span>Create</span></a>{% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button>↗<span>Log out</span></button></form>{% else %}<a href="{% url 'login' %}">◉<span>Log in</span></a>{% endif %}</footer>
+      <footer class="mobile-footer cc-mobile-nav" aria-label="Mobile navigation">
+        <a href="{% url 'tweet_list' %}" aria-label="Home"><span>⌂</span><small>Home</small></a>
+        <a href="{% url 'search_tweets' %}" aria-label="Explore"><span>⌕</span><small>Explore</small></a>
+        <a class="cc-mobile-create" href="{% url 'tweet_create' %}" aria-label="Create a post"><span>＋</span><small>Post</small></a>
+        {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button aria-label="Log out"><span>↗</span><small>Log out</small></button></form>{% else %}<a href="{% url 'login' %}" aria-label="Log in"><span>◉</span><small>Log in</small></a>{% endif %}
+      </footer>
     </main>
-    <aside class="right-rail"><section class="rail-card welcome-card"><span class="rail-kicker">A FRIENDLY REMINDER</span><div class="welcome-art"><span class="sunburst">✳</span><span class="sparkle sparkle-a">✦</span><span class="sparkle sparkle-b">✦</span></div><h2>Good things grow<br>when we share.</h2><p>Drop by, say hello, and leave a little kindness in the feed.</p><a href="{% url 'tweet_create' %}" class="text-link">Share something nice <span>↗</span></a></section><section class="rail-card mini-card"><span class="online-dot"></span><div><strong>Your space, your pace.</strong><p>Made for small moments and big ideas.</p></div></section><p class="rail-foot">A cozy corner of your internet <span>✦</span></p></aside>
+    <aside class="right-rail cc-rail" aria-label="Community">
+      <section class="rail-card cc-panel cc-trends">
+        <div class="cc-panel-heading"><div><span class="rail-kicker">THE COMMUNITY PULSE</span><h2>What’s happening</h2></div><span class="cc-panel-spark" aria-hidden="true">✦</span></div>
+        {% if trending_topics %}
+          {% for topic in trending_topics %}
+            <a class="cc-trend" href="{% url 'search_tweets' %}?q=%23{{ topic.tag|urlencode }}"><span class="cc-trend-label">Trending in Chai &amp; Chatter</span><strong>#{{ topic.tag }}</strong><span>{{ topic.posts }} {% if topic.posts == 1 %}post{% else %}posts{% endif %}</span></a>
+          {% endfor %}
+        {% else %}
+          <p class="cc-empty-trend">Start a conversation with a hashtag and it can show up here.</p>
+        {% endif %}
+        <a class="cc-see-more" href="{% url 'search_tweets' %}">Explore conversations <span>→</span></a>
+      </section>
+      <section class="rail-card cc-panel cc-people">
+        <div class="cc-panel-heading"><div><span class="rail-kicker">GOOD PEOPLE, GOOD CHATS</span><h2>Who to follow</h2></div><span class="cc-panel-spark" aria-hidden="true">☕</span></div>
+        {% for person in suggested_users %}
+          <div class="cc-person">
+            <span class="avatar cc-person-avatar">{{ person.username|first|upper }}</span>
+            <div class="cc-person-copy"><strong>{{ person.username }}</strong><span>{{ person.follower_count }} {% if person.follower_count == 1 %}follower{% else %}followers{% endif %}</span></div>
+            {% if user.is_authenticated %}
+              <form method="post" action="{% url 'toggle_follow' person.id %}">{% csrf_token %}<button class="follow-button cc-follow" type="submit">Follow</button></form>
+            {% else %}<a class="follow-button cc-follow" href="{% url 'login' %}">Follow</a>{% endif %}
+          </div>
+        {% empty %}
+          <p class="cc-empty-trend">Your next favorite conversation is one follow away.</p>
+        {% endfor %}
+        <a class="cc-see-more" href="{% url 'search_tweets' %}">Find your people <span>→</span></a>
+      </section>
+      <section class="rail-card cc-note-card"><span class="cc-note-icon" aria-hidden="true">☕</span><div><strong>Make yourself at home.</strong><p>Good things grow when we share them.</p></div></section>
+      <p class="rail-foot cc-rail-foot">A cozy corner of your internet <span>✦</span></p>
+    </aside>
   </div>
   <script src="{% static 'tweet/js/app.js' %}" defer></script>
 </body>
 </html>
-

@@ -73,5 +73,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
 
+  const root = document.documentElement;
+  const themeButtons = document.querySelectorAll('[data-theme-toggle]');
+  const savedTheme = localStorage.getItem('chai-chatter-theme');
+  if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
+  const syncThemeButtons = () => {
+    const dark = root.dataset.theme === 'dark';
+    themeButtons.forEach((button) => {
+      button.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      button.setAttribute('title', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      const icon = button.querySelector('.cc-theme-icon');
+      if (icon) icon.textContent = dark ? '☀' : '☾';
+      const label = button.querySelector('.cc-theme-label');
+      if (label) label.textContent = dark ? 'Light theme' : 'Dark theme';
+    });
+  };
+  syncThemeButtons();
+  themeButtons.forEach((button) => button.addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('chai-chatter-theme', root.dataset.theme);
+    syncThemeButtons();
+  }));
+});
