@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f7f8fa">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Chai">
+  <link rel="manifest" href="{% static 'tweet/manifest.webmanifest' %}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'tweet/images/chai-icon-192.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'tweet/images/chai-icon-192.png' %}">
   <title>{% block title %}Chai &amp; Chatter{% endblock %} · Chai &amp; Chatter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +18,7 @@
   <link href="{% static 'tweet/css/app.css' %}" rel="stylesheet">
   <link href="{% static 'tweet/css/redesign.css' %}" rel="stylesheet">
   <link href="{% static 'tweet/css/chai.css' %}" rel="stylesheet">
+  <link href="{% static 'tweet/css/pwa.css' %}" rel="stylesheet">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -40,6 +47,7 @@
       <header class="topbar cc-topbar">
         <div class="cc-heading"><span class="eyebrow">YOUR DAILY DOSE OF GOOD VIBES</span><h1>{% block page_heading %}The feed{% endblock %}</h1></div>
         <div class="topbar-actions cc-top-actions">
+          <div class="cc-install-wrap"><button class="cc-install-button" type="button" data-install-app><span aria-hidden="true">↓</span><span class="cc-install-label">Install app</span></button><span class="cc-install-status" data-install-status role="status" aria-live="polite"></span></div>
           <form class="search-form cc-search" action="{% url 'search_tweets' %}" method="get" role="search"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search Chai &amp; Chatter" aria-label="Search posts"><kbd>↵</kbd></form>
           <button class="cc-theme-toggle cc-theme-compact" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Change theme"><span class="cc-theme-icon" aria-hidden="true">☾</span></button>
           {% if user.is_authenticated %}<span class="top-avatar cc-top-avatar" aria-label="Signed in as {{ user.username }}">{{ user.username|first|upper }}</span>{% else %}<a class="top-login" href="{% url 'login' %}">Sign in <span>↗</span></a>{% endif %}

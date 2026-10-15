@@ -6,11 +6,11 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count, Max, Q
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from .forms import CommentForm, TweetForm, UserRegistrationForm
 from .models import ChaiMessage, ChaiRoom, Comment, Follow, Like, Tweet
@@ -127,6 +127,17 @@ def chai_room_messages(request, slug):
         return JsonResponse({'error': 'Keep your message under 300 characters.'}, status=400)
     message = ChaiMessage.objects.create(room=room, user=request.user, body=body)
     return JsonResponse({'message': _chai_message_payload(message)}, status=201)
+
+
+@require_GET
+def service_worker(request):
+    response = HttpResponse(
+        "importScripts('/static/tweet/js/service-worker.js');",
+        content_type='application/javascript',
+    )
+    response['Service-Worker-Allowed'] = '/'
+    response['Cache-Control'] = 'no-cache'
+    return response
 
 
 def index(request):

@@ -282,4 +282,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
+  const installButtons = document.querySelectorAll('[data-install-app]');
+  const installStatus = document.querySelector('[data-install-status]');
+  let installEvent = null;
+  const hideInstall = () => installButtons.forEach((button) => { button.hidden = true; });
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    hideInstall();
+  }
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installEvent = event;
+    installButtons.forEach((button) => { button.hidden = false; });
+  });
+  window.addEventListener('appinstalled', () => {
+    installEvent = null;
+    hideInstall();
+    if (installStatus) installStatus.textContent = 'Chai & Chatter is installed.';
+  });
+  installButtons.forEach((button) => button.addEventListener('click', async () => {
+    if (!installEvent) {
+      if (installStatus) installStatus.textContent = 'In Chrome, open ⋮ and choose “Install Chai & Chatter” or “Add to Home screen”.';
+      return;
+    }
+    installEvent.prompt();
+    const choice = await installEvent.userChoice;
+    installEvent = null;
+    if (choice.outcome === 'accepted') hideInstall();
+    else if (installStatus) installStatus.textContent = 'You can install it anytime from Chrome’s menu.';
+  }));
+
+  if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+    navigator.serviceWorker.register('/service-worker.js', {scope: '/'})
+      .catch(() => {});
+  }
+
 });

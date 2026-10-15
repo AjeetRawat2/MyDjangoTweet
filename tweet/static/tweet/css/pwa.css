@@ -1,0 +1,8 @@
+.cc-install-wrap{position:relative;display:flex;align-items:center}
+.cc-install-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 13px;border:1px solid var(--cc-border);border-radius:999px;background:var(--cc-surface);color:var(--cc-text);font:700 12px "DM Sans",sans-serif;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.cc-install-button:hover{transform:translateY(-1px);border-color:var(--cc-blue);background:var(--cc-blue-soft)}
+.cc-install-button>span:first-child{color:var(--cc-blue);font-size:17px}
+.cc-install-button[hidden]{display:none}
+.cc-install-status{position:absolute;top:calc(100% + 8px);right:0;z-index:20;width:max-content;max-width:min(290px,80vw);padding:8px 10px;border:1px solid var(--cc-border);border-radius:8px;background:var(--cc-surface);color:var(--cc-muted);font-size:11px;line-height:1.4}
+.cc-install-status:empty{display:none}
+@media(max-width:720px){.cc-install-button{min-height:34px;padding:0 9px;font-size:11px}.cc-install-button>span:first-child{font-size:15px}.cc-top-actions{gap:7px}}
