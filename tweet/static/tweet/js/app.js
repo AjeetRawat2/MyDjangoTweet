@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+  if (document.querySelector('[data-login-form]')) {
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) window.location.reload();
+    });
+  }
+
   const revealTargets = document.querySelectorAll('[data-reveal], .post-card');
 
   if ('IntersectionObserver' in window) {

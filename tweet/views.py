@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Max, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
@@ -25,6 +26,31 @@ def _safe_return(request):
     ):
         return redirect(return_to)
     return redirect('tweet_list')
+
+
+def csrf_failure(request, reason=''):
+    # A login page restored from Android/Chrome's back-forward cache can contain
+    # a token from before the browser's CSRF cookie rotated. Refresh the form.
+    if (
+        request.method == 'POST'
+        and request.path.rstrip('/') == '/accounts/login'
+        and reason.startswith('CSRF token from POST incorrect')
+    ):
+        response = redirect(f'{reverse("login")}?csrf=refresh')
+        response['Cache-Control'] = 'no-store'
+        return response
+
+    return HttpResponse(
+        '<!doctype html><html lang="en"><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<title>Refresh your page · Chai &amp; Chatter</title>'
+        '<body style="font:16px system-ui;max-width:34rem;margin:12vh auto;padding:1.5rem;color:#172033">'
+        '<h1>Let’s refresh that page</h1>'
+        '<p>For your security, this request could not be verified. Reload the page and try again.</p>'
+        '<p><a href="/">Back to Chai &amp; Chatter</a></p></body></html>',
+        status=403,
+        content_type='text/html; charset=utf-8',
+    )
 
 
 def _feed_context(tweets, user):

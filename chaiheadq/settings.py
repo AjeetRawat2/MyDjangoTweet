@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-kdz561bj%1o7^x&ncq2+wj^j=slb6hl1hmhtuuj&b$c2aq+-g4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'false').lower() in ('1', 'true', 'yes')
 
 ALLOWED_HOSTS = [
     '.onrender.com',
@@ -34,6 +34,13 @@ ALLOWED_HOSTS = [
 
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET', '')
+
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+CSRF_FAILURE_VIEW = 'tweet.views.csrf_failure'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://mydjangotweet.onrender.com',

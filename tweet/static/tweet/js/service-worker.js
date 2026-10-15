@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chai-chatter-static-v1';
+const CACHE_NAME = 'chai-chatter-static-v2';
 const APP_ASSETS = [
   '/static/tweet/css/app.css',
   '/static/tweet/css/redesign.css',
