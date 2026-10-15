@@ -1,0 +1,83 @@
+
+.chai-page-intro { padding: 26px 3px 19px; }
+.chai-eyebrow { color: var(--cc-blue); font-size: 10px; font-weight: 800; letter-spacing: 1.15px; }
+.chai-page-intro h2 { margin: 7px 0 5px; color: var(--cc-text); font: 800 27px Manrope,sans-serif; letter-spacing: -.8px; }
+.chai-page-intro p { max-width: 550px; margin: 0; color: var(--cc-muted); font-size: 14px; line-height: 1.6; }
+.cc-question-card { margin: 8px 0 21px; padding: 18px 20px; border: 1px solid var(--cc-border); border-left: 4px solid #e98554; border-radius: 12px; background: var(--cc-surface); color: var(--cc-text); }
+.cc-question-overline { display: flex; align-items: center; gap: 7px; color: var(--cc-muted); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+.cc-question-overline span { font-size: 15px; }
+.cc-question-card h2 { margin: 10px 0 5px; color: var(--cc-text); font: 700 19px Manrope,sans-serif; line-height: 1.4; }
+.cc-question-card p { margin: 8px 0 0; color: var(--cc-muted); font-size: 12px; line-height: 1.55; }
+.cc-question-card > a { display: inline-flex; gap: 7px; margin-top: 13px; color: var(--cc-blue); font-size: 12px; font-weight: 700; text-decoration: none; }
+.cc-question-card > a:hover { text-decoration: underline; }
+.cc-question-card.chai-question-card { padding: 18px 20px; }
+.cc-question-card.chai-question-card h2 { margin-bottom: 0; }
+.chai-room-heading { display: flex; justify-content: space-between; align-items: end; gap: 10px; margin: 25px 2px 12px; }
+.chai-room-heading h2 { margin: 5px 0 0; color: var(--cc-text); font: 800 18px Manrope,sans-serif; }
+.chai-room-count { color: var(--cc-muted); font-size: 11px; }
+.chai-room-grid { display: grid; gap: 10px; }
+.chai-room-card { display: grid; grid-template-columns: 46px minmax(0,1fr) auto; gap: 13px; align-items: center; padding: 15px 16px; border: 1px solid var(--cc-border); border-radius: 13px; background: var(--cc-surface); transition: border-color .16s ease, background .16s ease; }
+.chai-room-card:hover { border-color: var(--cc-blue); background: var(--cc-surface-soft); }
+.chai-room-icon { display: grid; place-items: center; width: 43px; height: 43px; border-radius: 12px; background: var(--cc-surface-soft); font-size: 23px; }
+.chai-room-card-copy { min-width: 0; }
+.chai-room-card-copy h3 { margin: 0; color: var(--cc-text); font: 700 14px Manrope,sans-serif; }
+.chai-room-card-copy p { margin: 4px 0; color: var(--cc-muted); font-size: 11px; line-height: 1.5; }
+.chai-room-card-copy > span { color: var(--cc-muted); font-size: 10px; }
+.chai-enter-button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-width: 98px; min-height: 36px; padding: 0 12px; border-radius: 999px; background: var(--cc-text); color: var(--cc-surface); font-size: 11px; font-weight: 700; text-decoration: none; transition: background .16s ease, color .16s ease; }
+.chai-enter-button:hover { background: var(--cc-blue); color: #fff; }
+.chai-kindness-note { margin: 17px 2px 0; padding: 12px 14px; border: 1px solid var(--cc-border); border-radius: 10px; color: var(--cc-muted); font-size: 11px; line-height: 1.6; }
+.chai-kindness-note strong { color: var(--cc-text); }
+.chai-empty { padding: 25px; border: 1px solid var(--cc-border); border-radius: 12px; background: var(--cc-surface); }
+.chai-empty h3 { margin: 0 0 5px; color: var(--cc-text); }
+.chai-empty p { margin: 0; color: var(--cc-muted); }
+.chai-back-link { display: inline-block; margin: 18px 0 14px; color: var(--cc-muted); font-size: 12px; font-weight: 700; text-decoration: none; }
+.chai-back-link:hover { color: var(--cc-blue); }
+.chai-room-banner { display: flex; align-items: center; gap: 14px; padding: 16px 0 18px; border-bottom: 1px solid var(--cc-border); }
+.chai-room-banner .chai-room-icon { width: 52px; height: 52px; font-size: 27px; }
+.chai-room-banner h2 { margin: 4px 0 3px; color: var(--cc-text); font: 800 21px Manrope,sans-serif; }
+.chai-room-banner p { margin: 0; color: var(--cc-muted); font-size: 12px; }
+.chai-room-question { margin: 14px 0; padding: 13px 15px; }
+.chai-room-question > p { margin-top: 7px; color: var(--cc-text); font: 600 13px Manrope,sans-serif; }
+.chai-safety-note { display: flex; gap: 9px; align-items: flex-start; margin: 13px 0; padding: 10px 12px; border: 1px solid var(--cc-border); border-radius: 10px; background: var(--cc-surface-soft); }
+.chai-safety-note > span { color: #e98554; font-size: 16px; }
+.chai-safety-note p { margin: 0; color: var(--cc-muted); font-size: 10px; line-height: 1.55; }
+.chai-chat-panel { border: 1px solid var(--cc-border); border-radius: 13px; background: var(--cc-surface); overflow: hidden; }
+.chai-chat-heading { display: flex; justify-content: space-between; align-items: center; min-height: 46px; padding: 0 14px; border-bottom: 1px solid var(--cc-border); }
+.chai-chat-heading > div { display: flex; align-items: center; gap: 8px; color: var(--cc-text); font-size: 12px; }
+.chai-chat-heading > span { color: var(--cc-muted); font-size: 10px; }
+.chai-live-dot { width: 7px; height: 7px; border-radius: 50%; background: #42b883; }
+.chai-chat-feed { display: flex; flex-direction: column; gap: 10px; height: min(50vh,470px); min-height: 270px; padding: 15px; overflow: auto; overscroll-behavior: contain; }
+.chai-message { align-self: flex-start; max-width: min(84%,500px); padding: 9px 11px; border: 1px solid var(--cc-border); border-radius: 4px 12px 12px 12px; background: var(--cc-surface-soft); animation: chai-message-in .2s ease-out both; }
+.chai-message.is-mine { align-self: flex-end; border-color: var(--cc-blue-soft); border-radius: 12px 4px 12px 12px; background: var(--cc-blue-soft); }
+.chai-message-meta { display: flex; gap: 8px; align-items: baseline; }
+.chai-message-meta strong { color: var(--cc-text); font-size: 10px; }
+.chai-message-meta time { color: var(--cc-muted); font-size: 9px; }
+.chai-message-body { margin: 4px 0 0; color: var(--cc-text); font-size: 12px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.chai-chat-empty { display: grid; place-content: center; flex: 1; min-height: 200px; color: var(--cc-muted); text-align: center; }
+.chai-chat-empty > span { font-size: 28px; }
+.chai-chat-empty p { max-width: 270px; font-size: 12px; line-height: 1.5; }
+.chai-chat-form { display: flex; align-items: end; gap: 9px; padding: 11px; border-top: 1px solid var(--cc-border); background: var(--cc-surface); }
+.chai-chat-form textarea { flex: 1; min-height: 41px; max-height: 110px; resize: vertical; padding: 11px 12px; border: 1px solid var(--cc-border); border-radius: 10px; outline: none; background: var(--cc-surface); color: var(--cc-text); font: 12px "DM Sans",sans-serif; }
+.chai-chat-form textarea:focus { border-color: var(--cc-blue); }
+.chai-chat-form textarea::placeholder { color: var(--cc-muted); }
+.chai-chat-form button { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 13px; border: 0; border-radius: 9px; background: var(--cc-blue); color: #fff; font: 700 11px "DM Sans",sans-serif; cursor: pointer; }
+.chai-chat-form button:hover { background: #176fdd; }
+.chai-chat-form button:disabled { opacity: .55; cursor: wait; }
+.chai-chat-error { margin: 0; padding: 0 12px 12px; color: #ce3d4b; font-size: 11px; }
+.chai-chat-error[hidden] { display: none; }
+.comment-item.is-new { animation: chai-message-in .24s ease-out both; }
+.comment-form button:disabled { opacity: .55; cursor: wait; }
+@keyframes chai-message-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+@media (max-width: 720px) {
+  .chai-page-intro { padding-top: 19px; }
+  .chai-page-intro h2 { font-size: 23px; }
+  .chai-room-card { grid-template-columns: 39px minmax(0,1fr); gap: 10px; padding: 13px; }
+  .chai-room-card .chai-room-icon { width: 38px; height: 38px; font-size: 20px; }
+  .chai-enter-button { grid-column: 2; justify-self: start; min-height: 32px; }
+  .chai-chat-feed { height: 48vh; min-height: 240px; padding: 12px; }
+  .chai-message { max-width: 92%; }
+  .chai-chat-form { padding: 8px; }
+  .chai-chat-form textarea { min-height: 39px; padding: 10px; }
+  .chai-chat-form button { padding: 0 10px; }
+  .chai-chat-form button span { display: none; }
+}

@@ -3,6 +3,7 @@
 {% block page_heading %}The feed{% endblock %}
 {% block content %}
 <section class="cc-feed-intro"><div><span class="section-label">A FRESH LITTLE TIMELINE</span><h2>What’s happening?</h2><p>Catch up with your corner of the world.</p></div><span class="cc-intro-doodle" aria-hidden="true">☕</span></section>
+<section class="cc-question-card" aria-labelledby="chai-question-title"><div class="cc-question-overline"><span>☕</span> TODAY'S CHAI QUESTION</div><h2 id="chai-question-title">{{ chai_question }}</h2><p>Take it to a Chai Table and see what someone new thinks.</p><a href="{% url 'chai_tables' %}">Start a conversation <span>→</span></a></section>
 <nav class="cc-feed-tabs" aria-label="Choose your feed">
   <a class="{% if feed_mode == 'for-you' %}is-active{% endif %}" href="{% url 'tweet_list' %}?feed=for-you">For you</a>
   {% if user.is_authenticated %}<a class="{% if feed_mode == 'following' %}is-active{% endif %}" href="{% url 'tweet_list' %}?feed=following">Following</a>{% else %}<a href="{% url 'login' %}">Following</a>{% endif %}

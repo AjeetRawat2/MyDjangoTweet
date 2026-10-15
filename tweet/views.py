@@ -5,13 +5,15 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Count, Q
+from django.db.models import Count, Max, Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods, require_POST
 
 from .forms import CommentForm, TweetForm, UserRegistrationForm
-from .models import Comment, Follow, Like, Tweet
+from .models import ChaiMessage, ChaiRoom, Comment, Follow, Like, Tweet
 
 
 def _safe_return(request):
@@ -48,6 +50,85 @@ def _feed_context(tweets, user):
     return {'tweets': tweets, 'comment_form': CommentForm()}
 
 
+CHAI_QUESTIONS = (
+    'What small thing made you smile this week?',
+    'What is your perfect chai-and-snack combination?',
+    'If you could take a chai break anywhere, where would you go?',
+    'What song always makes a regular day better?',
+    'What is a tiny joy you wish more people noticed?',
+    'Which movie can you happily watch again and again?',
+    'What is the best advice a friend has given you?',
+    'If today had a theme song, what would it be?',
+    'What is one place in your town everyone should visit?',
+    'What is your funniest harmless chai-time story?',
+    'What new hobby would you try with a friend?',
+    'What does a really good weekend look like to you?',
+)
+
+
+def _daily_chai_question():
+    day_number = timezone.localdate().toordinal()
+    return CHAI_QUESTIONS[day_number % len(CHAI_QUESTIONS)]
+
+
+def chai_tables(request):
+    rooms = ChaiRoom.objects.annotate(
+        message_count=Count('messages'),
+        people_count=Count('messages__user', distinct=True),
+        latest_activity=Max('messages__created_at'),
+    )
+    return render(request, 'chai_tables.html', {
+        'rooms': rooms,
+        'chai_question': _daily_chai_question(),
+    })
+
+
+@login_required
+def chai_table(request, slug):
+    room = get_object_or_404(ChaiRoom, slug=slug)
+    chat_messages = list(room.messages.select_related('user').order_by('-pk')[:60])
+    chat_messages.reverse()
+    return render(request, 'chai_room.html', {
+        'room': room,
+        'chat_messages': chat_messages,
+        'latest_message_id': chat_messages[-1].pk if chat_messages else 0,
+        'chai_question': _daily_chai_question(),
+    })
+
+
+def _chai_message_payload(message):
+    return {
+        'id': message.pk,
+        'username': message.user.username,
+        'user_id': message.user_id,
+        'body': message.body,
+        'created_at': timezone.localtime(message.created_at).isoformat(),
+    }
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def chai_room_messages(request, slug):
+    room = get_object_or_404(ChaiRoom, slug=slug)
+    if request.method == 'GET':
+        try:
+            after_id = max(0, int(request.GET.get('after', '0')))
+        except (TypeError, ValueError):
+            return JsonResponse({'error': 'Invalid message cursor.'}, status=400)
+        messages = room.messages.filter(pk__gt=after_id).select_related('user').order_by('pk')[:60]
+        response = JsonResponse({'messages': [_chai_message_payload(message) for message in messages]})
+        response['Cache-Control'] = 'no-store'
+        return response
+
+    body = request.POST.get('body', '').strip()
+    if not body:
+        return JsonResponse({'error': 'Write a message before sending.'}, status=400)
+    if len(body) > 300:
+        return JsonResponse({'error': 'Keep your message under 300 characters.'}, status=400)
+    message = ChaiMessage.objects.create(room=room, user=request.user, body=body)
+    return JsonResponse({'message': _chai_message_payload(message)}, status=201)
+
+
 def index(request):
     return render(request, 'index.html')
 
@@ -80,9 +161,9 @@ def tweet_list(request):
         'feed_mode': feed_mode,
         'suggested_users': suggested_users,
         'trending_topics': _trending_topics(),
+        'chai_question': _daily_chai_question(),
     })
     return render(request, 'tweet_list.html', feed_context)
-
 
 @login_required
 def tweet_create(request):
@@ -146,8 +227,9 @@ def toggle_like(request, tweet_id):
     like, created = Like.objects.get_or_create(tweet=tweet, user=request.user)
     if not created:
         like.delete()
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'is_liked': created, 'like_count': tweet.likes.count()})
     response = _safe_return(request)
-    # Return to this post after the form redirect instead of resetting the feed to the top.
     response['Location'] = f"{response['Location'].split('#', 1)[0]}#tweet-{tweet.pk}"
     return response
 
@@ -162,7 +244,19 @@ def add_comment(request, tweet_id):
         comment.tweet = tweet
         comment.user = request.user
         comment.save()
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({
+                'comment': {
+                    'id': comment.pk,
+                    'username': comment.user.username,
+                    'body': comment.text,
+                    'created_at': timezone.localtime(comment.created_at).isoformat(),
+                    'comment_count': tweet.comments.count(),
+                },
+            }, status=201)
     else:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'error': 'Your comment could not be posted. Keep it under 500 characters and try again.'}, status=400)
         messages.error(request, 'Your comment could not be posted. Keep it under 500 characters and try again.')
     return _safe_return(request)
 

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Chai Tables{% endblock %}
+{% block page_heading %}Chai Tables{% endblock %}
+{% block content %}
+<section class="chai-page-intro">
+  <span class="chai-eyebrow">PULL UP A CHAIR</span>
+  <h2>Good chats start over chai.</h2>
+  <p>Drop into a room, meet someone new, and make a little moment out of the day.</p>
+</section>
+<section class="cc-question-card chai-question-card" aria-labelledby="chai-question-title">
+  <div class="cc-question-overline"><span>☕</span> TODAY'S CHAI QUESTION</div>
+  <h2 id="chai-question-title">{{ chai_question }}</h2>
+  <p>Bring your answer to any table. You never know where a good conversation will go.</p>
+</section>
+<div class="chai-room-heading"><div><span class="chai-eyebrow">OPEN TABLES</span><h2>Choose your conversation</h2></div><span class="chai-room-count">{{ rooms|length }} tables</span></div>
+<section class="chai-room-grid" aria-label="Chai Tables">
+  {% for room in rooms %}
+    <article class="chai-room-card">
+      <span class="chai-room-icon" aria-hidden="true">{{ room.emoji }}</span>
+      <div class="chai-room-card-copy"><h3>{{ room.name }}</h3><p>{{ room.description }}</p><span>{{ room.people_count }} {% if room.people_count == 1 %}person{% else %}people{% endif %} · {{ room.message_count }} {% if room.message_count == 1 %}message{% else %}messages{% endif %}</span></div>
+      {% if user.is_authenticated %}<a class="chai-enter-button" href="{% url 'chai_table' room.slug %}">Join table <span>→</span></a>{% else %}<a class="chai-enter-button" href="{% url 'login' %}">Sign in to join <span>→</span></a>{% endif %}
+    </article>
+  {% empty %}
+    <div class="chai-empty"><h3>We’re setting the table.</h3><p>Check back soon for a new conversation.</p></div>
+  {% endfor %}
+</section>
+<p class="chai-kindness-note"><strong>Keep it kind:</strong> these tables are public. Avoid sharing personal details, and leave any conversation that makes you uncomfortable.</p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}{{ room.name }} · Chai Tables{% endblock %}
+{% block page_heading %}{{ room.name }}{% endblock %}
+{% block content %}
+<a class="chai-back-link" href="{% url 'chai_tables' %}">← All Chai Tables</a>
+<section class="chai-room-banner">
+  <span class="chai-room-icon" aria-hidden="true">{{ room.emoji }}</span>
+  <div><span class="chai-eyebrow">OPEN CHAI TABLE</span><h2>{{ room.name }}</h2><p>{{ room.description }}</p></div>
+</section>
+<section class="cc-question-card chai-room-question">
+  <div class="cc-question-overline"><span>☕</span> TODAY'S CHAI QUESTION</div>
+  <p>{{ chai_question }}</p>
+</section>
+<div class="chai-safety-note"><span aria-hidden="true">♡</span><p>Say hello, be kind, and keep personal details private. Messages are visible to people in this public room.</p></div>
+<section class="chai-chat-panel" data-chai-chat data-endpoint="{% url 'chai_room_messages' room.slug %}" data-user-id="{{ user.id }}" data-latest-id="{{ latest_message_id }}">
+  <div class="chai-chat-heading"><div><span class="chai-live-dot"></span><strong>At the table</strong></div><span data-chat-status>Connecting…</span></div>
+  <div class="chai-chat-feed" data-chat-feed aria-live="polite" aria-label="Chai Table messages">
+    {% for message in chat_messages %}
+      <article class="chai-message{% if message.user_id == user.id %} is-mine{% endif %}" data-message-id="{{ message.id }}">
+        <div class="chai-message-meta"><strong>{{ message.user.username }}</strong><time datetime="{{ message.created_at|date:'c' }}">{{ message.created_at|date:'H:i' }}</time></div>
+        <p class="chai-message-body">{{ message.body }}</p>
+      </article>
+    {% empty %}
+      <div class="chai-chat-empty" data-chat-empty><span aria-hidden="true">☕</span><p>You're first at the table. Say hello and break the ice.</p></div>
+    {% endfor %}
+  </div>
+  <form class="chai-chat-form" data-chat-form method="post" action="{% url 'chai_room_messages' room.slug %}">
+    {% csrf_token %}
+    <label class="sr-only" for="chai-message-input">Your message</label>
+    <textarea id="chai-message-input" name="body" rows="1" maxlength="300" placeholder="Say something friendly…" required></textarea>
+    <button type="submit" aria-label="Send message"><span>Send</span><b aria-hidden="true">→</b></button>
+  </form>
+  <p class="chai-chat-error" data-chat-error role="status" hidden></p>
+</section>
+{% endblock %}

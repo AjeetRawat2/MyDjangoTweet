@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('chai/', views.chai_tables, name='chai_tables'),
+    path('chai/<slug:slug>/', views.chai_table, name='chai_table'),
+    path('chai/<slug:slug>/messages/', views.chai_room_messages, name='chai_room_messages'),
     path('',views.tweet_list,name='tweet_list'),
     path('create/',views.tweet_create,name='tweet_create'),
     path('<int:tweet_id>/delete/',views.tweet_delete,name='tweet_delete'),

@@ -95,4 +95,191 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('chai-chatter-theme', root.dataset.theme);
     syncThemeButtons();
   }));
+
+  document.querySelectorAll('[data-like-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('.like-button');
+      if (!button || button.disabled) return;
+      const wasLiked = button.classList.contains('is-liked');
+      button.disabled = true;
+      button.classList.toggle('is-liked', !wasLiked);
+      button.setAttribute('aria-pressed', String(!wasLiked));
+      button.setAttribute('aria-label', !wasLiked ? 'Unlike post' : 'Like post');
+      button.classList.remove('is-animating');
+      requestAnimationFrame(() => button.classList.add('is-animating'));
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          credentials: 'same-origin'
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Like could not be saved.');
+        button.classList.toggle('is-liked', result.is_liked);
+        button.setAttribute('aria-pressed', String(result.is_liked));
+        button.setAttribute('aria-label', result.is_liked ? 'Unlike post' : 'Like post');
+        button.dataset.likeCount = String(result.like_count);
+      } catch (_error) {
+        button.classList.toggle('is-liked', wasLiked);
+        button.setAttribute('aria-pressed', String(wasLiked));
+        button.setAttribute('aria-label', wasLiked ? 'Unlike post' : 'Like post');
+      } finally {
+        button.disabled = false;
+        window.setTimeout(() => button.classList.remove('is-animating'), 600);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-comment-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const textarea = form.querySelector('textarea');
+      const submitButton = form.querySelector('button[type="submit"]');
+      const dialog = form.closest('.comments-dialog');
+      const thread = dialog?.querySelector('.comments-panel');
+      const trigger = dialog ? document.querySelector('.comment-count[href="#' + dialog.id + '"]') : null;
+      if (!textarea || !thread || !submitButton || !textarea.value.trim()) return;
+      submitButton.disabled = true;
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {'X-Requested-With': 'XMLHttpRequest'},
+          credentials: 'same-origin'
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Comment could not be posted.');
+        const comment = result.comment;
+        const item = document.createElement('div');
+        item.className = 'comment-item is-new';
+        const avatar = document.createElement('span');
+        avatar.className = 'comment-avatar';
+        avatar.textContent = comment.username.charAt(0).toUpperCase();
+        const bubble = document.createElement('div');
+        bubble.className = 'comment-bubble';
+        const author = document.createElement('strong');
+        author.textContent = comment.username;
+        const body = document.createElement('p');
+        body.textContent = comment.body;
+        const time = document.createElement('time');
+        time.dateTime = comment.created_at;
+        time.textContent = new Date(comment.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        bubble.append(author, body, time);
+        item.append(avatar, bubble);
+        thread.insertBefore(item, form);
+        thread.scrollTop = thread.scrollHeight;
+        textarea.value = '';
+        textarea.style.height = 'auto';
+        if (trigger) {
+          trigger.dataset.commentCount = String(comment.comment_count);
+          trigger.setAttribute('aria-label', 'Open comments. ' + comment.comment_count + (comment.comment_count === 1 ? ' comment.' : ' comments.'));
+        }
+      } catch (error) {
+        let status = dialog?.querySelector('[data-comment-error]');
+        if (!status && dialog) {
+          status = document.createElement('p');
+          status.dataset.commentError = '';
+          status.className = 'chai-chat-error';
+          status.setAttribute('role', 'status');
+          form.insertAdjacentElement('beforebegin', status);
+        }
+        if (status) status.textContent = error.message;
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-chai-chat]').forEach((chat) => {
+    const feed = chat.querySelector('[data-chat-feed]');
+    const form = chat.querySelector('[data-chat-form]');
+    const status = chat.querySelector('[data-chat-status]');
+    const error = chat.querySelector('[data-chat-error]');
+    if (!feed || !form) return;
+    let latestId = Number(chat.dataset.latestId || 0);
+    let polling = false;
+
+    const appendMessage = (message) => {
+      if (message.id <= latestId) return;
+      feed.querySelector('[data-chat-empty]')?.remove();
+      const item = document.createElement('article');
+      item.className = 'chai-message' + (String(message.user_id) === chat.dataset.userId ? ' is-mine' : '');
+      item.dataset.messageId = String(message.id);
+      const meta = document.createElement('div');
+      meta.className = 'chai-message-meta';
+      const author = document.createElement('strong');
+      author.textContent = message.username;
+      const time = document.createElement('time');
+      time.dateTime = message.created_at;
+      time.textContent = new Date(message.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      const body = document.createElement('p');
+      body.className = 'chai-message-body';
+      body.textContent = message.body;
+      meta.append(author, time);
+      item.append(meta, body);
+      feed.append(item);
+      latestId = message.id;
+      chat.dataset.latestId = String(latestId);
+      feed.scrollTop = feed.scrollHeight;
+    };
+
+    const refresh = async () => {
+      if (polling || document.hidden) return;
+      polling = true;
+      try {
+        const response = await fetch(chat.dataset.endpoint + '?after=' + latestId, {
+          headers: {'Accept': 'application/json'},
+          credentials: 'same-origin',
+          cache: 'no-store'
+        });
+        if (!response.ok) throw new Error('Reconnect');
+        const result = await response.json();
+        result.messages.forEach(appendMessage);
+        if (status) status.textContent = 'Messages refresh automatically';
+        if (error) error.hidden = true;
+      } catch (_error) {
+        if (status) status.textContent = 'Reconnecting…';
+      } finally {
+        polling = false;
+      }
+    };
+
+    feed.scrollTop = feed.scrollHeight;
+    refresh();
+    window.setInterval(refresh, 4000);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const field = form.querySelector('textarea[name="body"]');
+      const button = form.querySelector('button[type="submit"]');
+      if (!field || !button || !field.value.trim()) return;
+      button.disabled = true;
+      if (error) error.hidden = true;
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json'},
+          credentials: 'same-origin'
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Your message could not be sent.');
+        appendMessage(result.message);
+        field.value = '';
+        field.style.height = 'auto';
+        if (status) status.textContent = 'Messages refresh automatically';
+      } catch (sendError) {
+        if (error) {
+          error.textContent = sendError.message;
+          error.hidden = false;
+        }
+      } finally {
+        button.disabled = false;
+        field.focus();
+      }
+    });
+  });
+
 });

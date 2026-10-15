@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'tweet/css/app.css' %}" rel="stylesheet">
   <link href="{% static 'tweet/css/redesign.css' %}" rel="stylesheet">
+  <link href="{% static 'tweet/css/chai.css' %}" rel="stylesheet">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -23,6 +24,7 @@
       <nav class="main-nav cc-nav" aria-label="Main navigation">
         <a class="nav-item {% if request.resolver_match.url_name == 'tweet_list' %}is-active{% endif %}" href="{% url 'tweet_list' %}"><span class="nav-icon" aria-hidden="true">⌂</span><span>Home</span></a>
         <a class="nav-item {% if request.resolver_match.url_name == 'search_tweets' %}is-active{% endif %}" href="{% url 'search_tweets' %}"><span class="nav-icon" aria-hidden="true">⌕</span><span>Explore</span></a>
+        <a class="nav-item {% if request.resolver_match.url_name == 'chai_tables' or request.resolver_match.url_name == 'chai_table' %}is-active{% endif %}" href="{% url 'chai_tables' %}"><span class="nav-icon" aria-hidden="true">☕</span><span>Chai Tables</span></a>
         <a class="nav-item" href="{% url 'tweet_create' %}"><span class="nav-icon" aria-hidden="true">＋</span><span>Create a post</span></a>
       </nav>
       <a class="sidebar-compose cc-compose" href="{% url 'tweet_create' %}"><span>＋</span><span>Share a thought</span></a>
@@ -48,6 +50,7 @@
       <footer class="mobile-footer cc-mobile-nav" aria-label="Mobile navigation">
         <a href="{% url 'tweet_list' %}" aria-label="Home"><span>⌂</span><small>Home</small></a>
         <a href="{% url 'search_tweets' %}" aria-label="Explore"><span>⌕</span><small>Explore</small></a>
+        <a href="{% url 'chai_tables' %}" aria-label="Chai Tables"><span>☕</span><small>Chai</small></a>
         <a class="cc-mobile-create" href="{% url 'tweet_create' %}" aria-label="Create a post"><span>＋</span><small>Post</small></a>
         {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button aria-label="Log out"><span>↗</span><small>Log out</small></button></form>{% else %}<a href="{% url 'login' %}" aria-label="Log in"><span>◉</span><small>Log in</small></a>{% endif %}
       </footer>

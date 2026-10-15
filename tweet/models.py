@@ -54,3 +54,30 @@ class Follow(models.Model):
     def __str__(self):
         return f'{self.follower} follows {self.following}'
 
+
+
+class ChaiRoom(models.Model):
+    name = models.CharField(max_length=80)
+    slug = models.SlugField(max_length=90, unique=True)
+    emoji = models.CharField(max_length=8, default='☕')
+    description = models.CharField(max_length=180)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
+class ChaiMessage(models.Model):
+    room = models.ForeignKey(ChaiRoom, on_delete=models.CASCADE, related_name='messages')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chai_messages')
+    body = models.CharField(max_length=300)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('created_at', 'pk')
+        indexes = [models.Index(fields=('room', 'created_at'), name='chai_msg_room_time_idx')]
+
+    def __str__(self):
+        return f'{self.user}: {self.body[:40]}'
