@@ -1,538 +1,156 @@
-# 🐦 MyDjangoTweet
+# Chai & Chatter ☕
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Django-Web%20Framework-092E20?logo=django&logoColor=white" alt="Django">
-  <img src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/Authentication-Django-success" alt="Authentication">
-  <img src="https://img.shields.io/badge/Deployed%20on-Render-000000?logo=render&logoColor=white" alt="Render">
-</p>
+A Django social app for sharing quick thoughts, meeting people, and starting friendly conversations over chai.
 
-<p align="center">
-  A lightweight social media application built with <b>Django</b> where users can create, edit, delete, search, and share tweets with optional images.
-</p>
+**Live app:** [chai-chatter.ajeetrawat.me](https://chai-chatter.ajeetrawat.me)  
+**Source:** [AjeetRawat2/MyDjangoTweet](https://github.com/AjeetRawat2/MyDjangoTweet)
 
-<p align="center">
-  <a href="https://mydjangotweet.onrender.com/">
-    🌐 Live Demo
-  </a>
-  &nbsp;•&nbsp;
-  <a href="https://github.com/AjeetRawat2/MyDjangoTweet">
-    💻 Source Code
-  </a>
-</p>
+## What you can do
 
----
+### Share posts
 
-## 📖 About
+- Publish text posts up to 240 characters.
+- Attach an image or an animated GIF. GIF animation plays in browsers that support it.
+- Edit or delete your own posts.
+- Browse a “For you” feed or a feed of posts from people you follow.
 
-**MyDjangoTweet** is a Twitter-inspired social media web application built using **Python and Django**.
+### React and talk
 
-Users can create an account, log in, publish short posts, attach images, edit their own tweets, delete them, browse recent posts, and search tweets by content or username.
+- Like and unlike posts. The heart changes to red and animates; likes save without reloading the page.
+- Open a post’s comments in an overlay and add a comment without reloading the feed.
+- Follow and unfollow other members, and see suggested accounts.
 
-The project demonstrates core Django concepts including:
+### Find conversations
 
-* Django Models
-* Forms
-* Authentication
-* CRUD operations
-* File uploads
-* Database relationships
-* Query filtering
-* Template rendering
-* Protected routes
+- Search posts by their text or the author’s username.
+- Browse popular hashtags based on recent posts.
+- See the Chai Question of the Day and take it into a conversation.
+- Join Chai Tables: themed chat rooms where signed-in members can talk with other people. New messages refresh automatically.
 
----
+### Make it yours
 
-## ✨ Features
+- Use the responsive layout on desktop and mobile.
+- Switch between light and dark themes.
+- Enjoy small motion effects on likes, comments, buttons, and newly revealed content. The interface respects the device’s reduced-motion preference.
 
-### 🔐 User Authentication
+## Install it from Chrome
 
-Users can register for an account and log in to access protected functionality.
+Chai & Chatter is a Progressive Web App (PWA). It can be installed from the secure website and opened from your desktop or phone’s app launcher. The install option appears after the site meets Chrome’s install requirements.
 
-After successful registration, the application automatically logs the new user in.
+### Desktop Chrome
 
----
+1. Open [chai-chatter.ajeetrawat.me](https://chai-chatter.ajeetrawat.me) in Chrome.
+2. Click **Install app** on the page, or use Chrome’s menu: **⋮ → Cast, save, and share → Install page as app**.
+3. Confirm the installation. To make a desktop shortcut, open `chrome://apps`, right-click Chai & Chatter, choose **Create shortcut**, and select **Desktop**.
 
-### 📝 Create Tweets
+### Android Chrome
 
-Authenticated users can create tweets containing up to:
+1. Open [chai-chatter.ajeetrawat.me](https://chai-chatter.ajeetrawat.me) in Chrome.
+2. Tap **Install app**, or open **⋮ → Install app** (on some devices, **Add to Home screen**).
+3. Confirm. The Chai & Chatter icon will appear on your home screen or in your app launcher.
 
-```text
-240 characters
-```
+### iPhone or iPad using Chrome
 
-Each tweet is automatically connected to the currently logged-in user.
+1. Open the site in Chrome.
+2. Tap **Share → Add to Home Screen**, then confirm.
 
----
+Chrome’s menu wording can vary by device and version. See Google’s [desktop](https://support.google.com/chrome/answer/9658361?co=genie.platform%3DDesktop&hl=en) and [mobile](https://support.google.com/chrome/answer/9658361?hl=en) instructions.
 
-### 🖼️ Image Uploads
+### Offline behavior
 
-Tweets can optionally include an image.
+The app can show its offline screen when it cannot reach the server. Its service worker keeps the app’s static interface files and up to 80 images you have already viewed on that device. Signing in, loading feeds and chats, posting, liking, and commenting still need an internet connection.
 
-```python
-photo = models.ImageField(
-    upload_to='photos/',
-    blank=True,
-    null=True
-)
-```
+## Run locally
 
-This means users can publish either:
-
-```text
-📝 Text only
-
-or
-
-📝 Text + 🖼️ Image
-```
-
----
-
-### ✏️ Edit Tweets
-
-Users can edit tweets they created.
-
-Tweet ownership is checked before editing:
-
-```python
-tweet = get_object_or_404(
-    Tweet,
-    pk=tweet_id,
-    user=request.user
-)
-```
-
-This prevents one user from editing another user's tweet.
-
----
-
-### 🗑️ Delete Tweets
-
-Users can also delete their own tweets.
-
-Delete operations are protected with:
-
-```python
-@login_required
-```
-
-and ownership verification.
-
----
-
-### 🔎 Search Tweets
-
-MyDjangoTweet includes search functionality that searches both:
-
-* Tweet content
-* Username
-
-The application uses Django `Q` objects:
-
-```python
-Tweet.objects.filter(
-    Q(text__icontains=query) |
-    Q(user__username__icontains=query)
-)
-```
-
-This provides case-insensitive searching.
-
----
-
-### 🕐 Latest Tweets First
-
-Tweets are displayed with the newest posts first:
-
-```python
-Tweet.objects.all().order_by('-created_at')
-```
-
----
-
-## 🛠️ Tech Stack
-
-| Technology     | Purpose             |
-| -------------- | ------------------- |
-| 🐍 Python      | Backend programming |
-| 🌿 Django      | Web framework       |
-| 🗄️ Django ORM | Database operations |
-| 🎨 HTML / CSS  | Frontend interface  |
-| 🔐 Django Auth | Authentication      |
-| 🖼️ ImageField | Tweet image uploads |
-| ☁️ Render      | Deployment          |
-
----
-
-# 🏗️ Application Architecture
-
-```text
-                👤 User
-                  │
-                  ▼
-          ┌───────────────┐
-          │ Django Views  │
-          └───────┬───────┘
-                  │
-        ┌─────────┼─────────┐
-        ▼         ▼         ▼
-     Create      Search    Edit/Delete
-      Tweet      Tweets      Tweet
-        │         │          │
-        └─────────┼──────────┘
-                  ▼
-           ┌─────────────┐
-           │ Django ORM  │
-           └──────┬──────┘
-                  ▼
-           ┌─────────────┐
-           │  Database   │
-           └──────┬──────┘
-                  ▼
-           ┌─────────────┐
-           │  Templates  │
-           └──────┬──────┘
-                  ▼
-              🌐 Browser
-```
-
----
-
-# 📊 Tweet Model
-
-The core database model is:
-
-```python
-class Tweet(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-
-    text = models.TextField(
-        max_length=240
-    )
-
-    photo = models.ImageField(
-        upload_to='photos/',
-        blank=True,
-        null=True
-    )
-
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    updated_at = models.DateTimeField(
-        auto_now=True
-    )
-```
-
-Each tweet contains:
-
-| Field        | Description                           |
-| ------------ | ------------------------------------- |
-| `user`       | User who created the tweet            |
-| `text`       | Tweet content, maximum 240 characters |
-| `photo`      | Optional uploaded image               |
-| `created_at` | Tweet creation time                   |
-| `updated_at` | Last modification time                |
-
----
-
-# 🔄 Tweet Lifecycle
-
-```text
-👤 User Login
-      ↓
-📝 Create Tweet
-      ↓
-Enter text (max 240 characters)
-      ↓
-Optional image upload
-      ↓
-💾 Save Tweet
-      ↓
-Django ORM
-      ↓
-🗄️ Database
-      ↓
-🐦 Tweet Feed
-```
-
-The tweet can later be:
-
-```text
-              🐦 Tweet
-                 │
-       ┌─────────┼─────────┐
-       ▼         ▼         ▼
-      View      Edit      Delete
-                 │          │
-                 └────┬─────┘
-                      ▼
-               Ownership Check
-                      │
-                      ▼
-                Update Database
-```
-
----
-
-# 🔐 Authentication & Authorization
-
-Several operations require authentication:
-
-```python
-@login_required
-def tweet_create(request):
-```
-
-```python
-@login_required
-def tweet_edit(request, tweet_id):
-```
-
-```python
-@login_required
-def tweet_delete(request, tweet_id):
-```
-
-Additionally, editing and deleting verify ownership using:
-
-```python
-user=request.user
-```
-
-So a user cannot modify another user's tweet through these views.
-
----
-
-# 📂 Suggested Project Structure
-
-```text
-MyDjangoTweet/
-│
-├── manage.py
-├── requirements.txt
-├── README.md
-│
-├── tweet/
-│   ├── migrations/
-│   ├── models.py
-│   ├── views.py
-│   ├── forms.py
-│   ├── urls.py
-│   └── admin.py
-│
-├── templates/
-│   ├── index.html
-│   ├── tweet_list.html
-│   ├── tweet_form.html
-│   ├── tweet_confirm_delete.html
-│   ├── search_results.html
-│   │
-│   └── registration/
-│       ├── login.html
-│       └── register.html
-│
-└── media/
-    └── photos/
-```
-
-> The exact folder names may differ depending on your current Django project structure.
-
----
-
-# 🚀 Getting Started
-
-## 1. Clone the Repository
+You’ll need Python and pip installed.
 
 ```bash
 git clone https://github.com/AjeetRawat2/MyDjangoTweet.git
-```
-
-Enter the project:
-
-```bash
 cd MyDjangoTweet
+python -m venv .venv
 ```
 
----
+Activate the environment:
 
-## 2. Create a Virtual Environment
-
-### Windows
-
-```bash
-python -m venv venv
-venv\Scripts\activate
+```powershell
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
 ```
 
-### Linux / macOS
-
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+# macOS or Linux
+source .venv/bin/activate
 ```
 
----
-
-## 3. Install Dependencies
-
-If the repository contains `requirements.txt`:
+Install dependencies, apply database migrations, and start the app:
 
 ```bash
-pip install -r requirements.txt
-```
-
----
-
-## 4. Run Database Migrations
-
-```bash
-python manage.py makemigrations
+python -m pip install -r requirements.txt
 python manage.py migrate
-```
-
----
-
-## 5. Start the Development Server
-
-```bash
 python manage.py runserver
 ```
 
-Then open:
+The project defaults to `DEBUG=False` and secure cookies. For local HTTP development, set `DEBUG=true` before starting the server.
 
-```text
-http://127.0.0.1:8000/
+```powershell
+# Windows PowerShell
+$env:DEBUG = "true"
+python manage.py runserver
 ```
 
----
-
-# 🎮 How to Use
-
-### 1️⃣ Register
-
-Create a new account through the registration page.
-
-After successful registration, the application automatically logs you in.
-
-### 2️⃣ Create a Tweet
-
-Write your tweet with up to **240 characters** and optionally upload an image.
-
-### 3️⃣ Browse Tweets
-
-Open the tweet feed to see posts ordered from newest to oldest.
-
-### 4️⃣ Search
-
-Search using:
-
-```text
-Tweet text
-      OR
-Username
+```bash
+# macOS or Linux
+DEBUG=true python manage.py runserver
 ```
 
-### 5️⃣ Manage Your Tweets
+## Optional account integrations
 
-When logged in, you can edit or delete tweets belonging to your account.
+### Google sign-in
 
----
+Google sign-in is shown when both environment variables are configured:
 
-# 🌐 Live Deployment
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
 
-The project is deployed on **Render**.
+Add the app’s OAuth callback URL to the Google OAuth client’s authorized redirect URIs:
 
-### 🚀 Live Website
-
-https://mydjangotweet.onrender.com/
-
----
-
-# 🗺️ Current Feature Flow
-
-```text
-                 MyDjangoTweet 🐦
-                       │
-        ┌──────────────┴──────────────┐
-        │                             │
-        ▼                             ▼
-   🔐 Authentication              🐦 Tweets
-        │                             │
-   ┌────┴────┐             ┌─────────┼─────────┐
-   ▼         ▼             ▼         ▼         ▼
-Register    Login        Create     Edit      Delete
-                           │
-                           ▼
-                     Text + Image
-
-                       🔎 Search
-                          │
-                    ┌─────┴─────┐
-                    ▼           ▼
-                Tweet Text   Username
+```
+https://chai-chatter.ajeetrawat.me/accounts/google/login/callback/
 ```
 
----
+For local testing, add the corresponding localhost callback URL to the OAuth client as well.
 
-# 🔮 Future Improvements
+### Password reset email
 
-Some possible upgrades for the project:
+Set these environment variables on the deployment to send password reset messages through SMTP:
 
-* ❤️ Like system
-* 💬 Comments and replies
-* 👥 Follow / unfollow users
-* 👤 User profile pages
-* 🖼️ Profile pictures
-* 🔁 Retweets
-* 🔖 Bookmark tweets
-* 🔔 Notifications
-* #️⃣ Hashtag support
-* 🌙 Dark mode
-* 📱 Improved mobile interface
-* ♾️ Infinite scrolling
-* 🔗 Shareable tweet URLs
-* REST API using Django REST Framework
+- `EMAIL_HOST`
+- `EMAIL_PORT` (defaults to `587`)
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `EMAIL_USE_TLS` (defaults to `true`)
+- `DEFAULT_FROM_EMAIL`
 
----
+Without an SMTP host, Django uses its console email backend, which is suitable for local development but does not deliver email to users.
 
-# 🎯 Learning Outcomes
+## Deployment and stored files
 
-This project demonstrates practical experience with:
+The app uses Django, SQLite, Pillow, django-allauth, and WhiteNoise. WhiteNoise serves the app’s static files. Render deployments should use HTTPS; the configured custom domain is included in Django’s allowed hosts and CSRF trusted origins.
 
-* Django project architecture
-* Models and database relationships
-* Django ORM
-* Authentication and authorization
-* CRUD operations
-* Form handling
-* File uploads
-* Query filtering with `Q`
-* Django templates
-* Login-protected routes
-* Deploying a Django web application
+A Render service’s local filesystem is temporary by default. If the service is on Render Free, it can also sleep after inactivity and take around a minute to wake when the next request arrives. This can look like a brief connection failure.
 
----
+Tweet uploads and the SQLite database are local files. On Render, files written to the service can be lost after a restart, sleep, or deploy unless persistent storage is configured. To keep uploaded images and app data long term, use persistent storage (where available) or move uploads to an object-storage service and the database to a managed database. The PWA’s image cache only keeps images already viewed on an individual device; it does not replace server-side storage.
 
-## 👨‍💻 Author
+The current settings file contains a hard-coded development `SECRET_KEY`. Before public production use, update settings to read a private key from the deployment environment and set that secret in Render.
 
-**Ajeet Rawat**
+## Main technologies
 
-GitHub: [@AjeetRawat2](https://github.com/AjeetRawat2)
+- [Django](https://www.djangoproject.com/) for pages, authentication, data, and forms
+- [django-allauth](https://docs.allauth.org/) for optional Google sign-in
+- [Pillow](https://python-pillow.org/) for uploaded image validation
+- [WhiteNoise](https://whitenoise.readthedocs.io/) for static files
+- A web manifest and service worker for installable PWA behavior
 
-Repository: [MyDjangoTweet](https://github.com/AjeetRawat2/MyDjangoTweet)
+## License
 
----
-
-## ⭐ Support
-
-If you like **MyDjangoTweet**, consider giving the repository a ⭐.
-
-<p align="center">
-  🐦 Built with Python & Django
-</p>
+No license file is currently included in this repository.
