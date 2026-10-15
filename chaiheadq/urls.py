@@ -20,17 +20,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.contrib.auth.urls import views as auth_views
+from . import seo
 import os
 
 urlpatterns = [
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
+    path('sitemap.xml', seo.sitemap, name='sitemap'),
+    path('robots.txt', seo.robots, name='robots'),
     path('admin/', admin.site.urls),
-    path('',include('tweet.urls')),
-     path('tweet/',include('tweet.urls')),
-    path('accounts/',include('django.contrib.auth.urls')),
-    path('accounts/',include('allauth.urls')),
+    path('', include('tweet.urls')),
+    path('tweet/', include('tweet.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static('/tweet/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
 urlpatterns += static('/tweet/search/static/', document_root=os.path.join(settings.BASE_DIR, 'tweet/static/'))
-
