@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count, Max, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.cache import never_cache
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -31,12 +32,17 @@ def _safe_return(request):
 def csrf_failure(request, reason=''):
     # A login page restored from Android/Chrome's back-forward cache can contain
     # a token from before the browser's CSRF cookie rotated. Refresh the form.
+    auth_form_views = {
+        '/accounts/login': 'login',
+        '/register': 'register',
+    }
+    form_view = auth_form_views.get(request.path.rstrip('/'))
     if (
         request.method == 'POST'
-        and request.path.rstrip('/') == '/accounts/login'
+        and form_view
         and reason.startswith('CSRF token from POST incorrect')
     ):
-        response = redirect(f'{reverse("login")}?csrf=refresh')
+        response = redirect(f'{reverse(form_view)}?csrf=refresh')
         response['Cache-Control'] = 'no-store'
         return response
 
@@ -238,6 +244,7 @@ def tweet_delete(request, tweet_id):
     return render(request, 'tweet_confirm_delete.html', {'tweet': tweet})
 
 
+@never_cache
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
