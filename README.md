@@ -145,14 +145,14 @@ The current settings file contains a hard-coded development `SECRET_KEY`. Before
 
 ### Keep follows and account data between deploys
 
-Render's default web-service filesystem is temporary, so its SQLite database can reset when the service restarts or deploys. To keep follows, accounts, posts, likes, and comments, connect the app to PostgreSQL:
+The app uses SQLite for local development. Render's default filesystem is temporary, so a SQLite database on the web service can reset after a restart or deploy. Use Neon PostgreSQL as the persistent database:
 
-1. In the Render Dashboard, create a **PostgreSQL** database. For long-term use, choose a plan that does not expire; Render's free PostgreSQL database expires after 30 days.
-2. Copy the database's **Internal Database URL**.
-3. Open your web service's **Environment** settings and add `DATABASE_URL` with that URL as its value. Keep the URL private.
-4. Deploy the app, then run `python manage.py migrate` in the service's Render Shell to create the tables in PostgreSQL.
+1. Create a Neon project and database, then open **Connect** in the Neon Console.
+2. Select the **pooled connection** option and copy its connection string. Neon connection strings require SSL; the app enforces SSL when `DATABASE_URL` is set.
+3. In Render, open the web service's **Environment** settings and add `DATABASE_URL` with the Neon connection string as its value. Treat the string like a password; do not add it to GitHub.
+4. Deploy the app, then open Render Shell and run `python manage.py migrate` to create the tables in Neon.
 
-The app uses PostgreSQL when `DATABASE_URL` is set and keeps SQLite for local development. Moving to a new database does not copy existing accounts or follows automatically; existing data must be migrated separately if it is still available.
+The app uses PostgreSQL when `DATABASE_URL` is set and keeps SQLite for local development. The Neon database starts separately from the current SQLite database, so existing accounts, follows, posts, likes, and comments do not copy over automatically. Migrate existing data separately if you need to keep it.
 
 ## Main technologies
 
