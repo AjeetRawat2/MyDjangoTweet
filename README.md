@@ -143,6 +143,17 @@ Tweet uploads and the SQLite database are local files. On Render, files written 
 
 The current settings file contains a hard-coded development `SECRET_KEY`. Before public production use, update settings to read a private key from the deployment environment and set that secret in Render.
 
+### Keep follows and account data between deploys
+
+Render's default web-service filesystem is temporary, so its SQLite database can reset when the service restarts or deploys. To keep follows, accounts, posts, likes, and comments, connect the app to PostgreSQL:
+
+1. In the Render Dashboard, create a **PostgreSQL** database. For long-term use, choose a plan that does not expire; Render's free PostgreSQL database expires after 30 days.
+2. Copy the database's **Internal Database URL**.
+3. Open your web service's **Environment** settings and add `DATABASE_URL` with that URL as its value. Keep the URL private.
+4. Deploy the app, then run `python manage.py migrate` in the service's Render Shell to create the tables in PostgreSQL.
+
+The app uses PostgreSQL when `DATABASE_URL` is set and keeps SQLite for local development. Moving to a new database does not copy existing accounts or follows automatically; existing data must be migrated separately if it is still available.
+
 ## Main technologies
 
 - [Django](https://www.djangoproject.com/) for pages, authentication, data, and forms
