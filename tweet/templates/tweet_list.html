@@ -11,7 +11,7 @@
 {% if user.is_authenticated %}
 <a class="composer-card cc-composer" href="{% url 'tweet_create' %}"><span class="avatar composer-avatar">{{ user.username|first|upper }}</span><span class="composer-prompt">What’s on your mind, {{ user.username }}?</span><span class="composer-submit">Post <span>↗</span></span></a>
 {% else %}
-<div class="guest-prompt cc-guest-prompt"><span class="avatar composer-avatar" aria-hidden="true">✦</span><div><strong>Good conversations start with hello.</strong><span>Join Chai &amp; Chatter to share a thought or meet someone new.</span><a class="cc-inline-login" href="{% url 'login' %}">Already a member? Sign in</a></div><a href="{% url 'register' %}">Create account <span>↗</span></a></div>
+<div class="guest-prompt cc-guest-prompt"><span class="avatar composer-avatar">✦</span><div><strong>Good conversations start with hello.</strong><span>Sign in to share what’s on your mind.</span></div><a href="{% url 'login' %}">Join in <span>↗</span></a></div>
 {% endif %}
 <div class="feed-heading cc-feed-heading"><span>{% if feed_mode == 'following' %}From people you follow{% else %}Latest posts{% endif %}</span><span class="feed-count">{{ tweets|length }} {% if tweets|length == 1 %}post{% else %}posts{% endif %} <i></i></span></div>
 <section class="feed-list cc-feed-list" aria-label="{% if feed_mode == 'following' %}Posts from people you follow{% else %}Latest posts{% endif %}">
