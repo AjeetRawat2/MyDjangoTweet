@@ -50,7 +50,7 @@
           <div class="cc-install-wrap"><button class="cc-install-button" type="button" data-install-app><span aria-hidden="true">↓</span><span class="cc-install-label">Install app</span></button><span class="cc-install-status" data-install-status role="status" aria-live="polite"></span></div>
           <form class="search-form cc-search" action="{% url 'search_tweets' %}" method="get" role="search"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search Chai &amp; Chatter" aria-label="Search posts"><kbd>↵</kbd></form>
           <button class="cc-theme-toggle cc-theme-compact" type="button" data-theme-toggle aria-label="Switch to dark theme" title="Change theme"><span class="cc-theme-icon" aria-hidden="true">☾</span></button>
-          {% if user.is_authenticated %}<span class="top-avatar cc-top-avatar" aria-label="Signed in as {{ user.username }}">{{ user.username|first|upper }}</span>{% else %}<a class="top-login" href="{% url 'login' %}">Sign in <span>↗</span></a>{% endif %}
+          {% if user.is_authenticated %}<span class="top-avatar cc-top-avatar" aria-label="Signed in as {{ user.username }}">{{ user.username|first|upper }}</span>{% else %}<a class="top-login" href="{% url 'login' %}">Sign in <span>↗</span></a><a class="cc-top-register" href="{% url 'register' %}">Create account</a>{% endif %}
         </div>
       </header>
       {% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
@@ -60,7 +60,7 @@
         <a href="{% url 'search_tweets' %}" aria-label="Explore"><span>⌕</span><small>Explore</small></a>
         <a href="{% url 'chai_tables' %}" aria-label="Chai Tables"><span>☕</span><small>Chai</small></a>
         <a class="cc-mobile-create" href="{% url 'tweet_create' %}" aria-label="Create a post"><span>＋</span><small>Post</small></a>
-        {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button aria-label="Log out"><span>↗</span><small>Log out</small></button></form>{% else %}<a href="{% url 'login' %}" aria-label="Log in"><span>◉</span><small>Log in</small></a>{% endif %}
+        {% if user.is_authenticated %}<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button aria-label="Log out"><span>↗</span><small>Log out</small></button></form>{% else %}<a href="{% url 'register' %}" aria-label="Create an account"><span>＋</span><small>Join</small></a>{% endif %}
       </footer>
     </main>
     <aside class="right-rail cc-rail" aria-label="Community">
