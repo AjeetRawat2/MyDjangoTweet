@@ -18,7 +18,7 @@
     <article class="chai-room-card">
       <span class="chai-room-icon" aria-hidden="true">{{ room.emoji }}</span>
       <div class="chai-room-card-copy"><h3>{{ room.name }}</h3><p>{{ room.description }}</p><span>{{ room.people_count }} {% if room.people_count == 1 %}person{% else %}people{% endif %} · {{ room.message_count }} {% if room.message_count == 1 %}message{% else %}messages{% endif %}</span></div>
-      {% if user.is_authenticated %}<a class="chai-enter-button" href="{% url 'chai_table' room.slug %}">Join table <span>→</span></a>{% else %}<a class="chai-enter-button" href="{% url 'register' %}">Create account to join <span>→</span></a>{% endif %}
+      {% if user.is_authenticated %}<a class="chai-enter-button" href="{% url 'chai_table' room.slug %}">Join table <span>→</span></a>{% else %}<a class="chai-enter-button" href="{% url 'login' %}">Sign in to join <span>→</span></a>{% endif %}
     </article>
   {% empty %}
     <div class="chai-empty"><h3>We’re setting the table.</h3><p>Check back soon for a new conversation.</p></div>
