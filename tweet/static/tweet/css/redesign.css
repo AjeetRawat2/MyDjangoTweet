@@ -217,3 +217,48 @@ html[data-theme="dark"] .cc-empty-state { box-shadow: none; }
 .comments-dialog .comment-bubble time { color: var(--cc-muted); }
 .comments-dialog .comments-panel { background: var(--cc-surface); }
 .comments-dialog .comment-form { border-top: 1px solid var(--cc-border); background: var(--cc-surface); backdrop-filter: none; }
+
+
+/* Clear keyboard focus and comfortable touch targets. */
+.cc-shell :focus-visible {
+  outline: 3px solid #e98554;
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+.cc-top-login { color: var(--cc-text); }
+.cc-top-register {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--cc-blue);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform .18s ease, background-color .18s ease;
+}
+.cc-top-register:hover { transform: translateY(-1px); background: #126bd2; }
+.cc-guest-prompt > div .cc-inline-login {
+  width: fit-content;
+  margin-top: 3px;
+  color: var(--cc-blue);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (max-width: 1120px) {
+  .cc-top-register { display: none; }
+}
+@media (max-width: 720px) {
+  .cc-mobile-nav a, .cc-mobile-nav form, .cc-mobile-nav button { min-height: 44px; }
+}
+@media (max-width: 410px) {
+  .cc-guest-prompt { flex-wrap: wrap; }
+  .cc-guest-prompt > div { min-width: calc(100% - 55px); }
+  .cc-guest-prompt > a { margin-left: auto; }
+}
