@@ -197,3 +197,21 @@ EMAIL_BACKEND = (
 )
 PASSWORD_RESET_TIMEOUT = 86400
 
+# Log server-side exceptions to Render while keeping DEBUG disabled.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'ERROR',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
