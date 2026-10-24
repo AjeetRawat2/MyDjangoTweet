@@ -217,5 +217,3 @@ html[data-theme="dark"] .cc-empty-state { box-shadow: none; }
 .comments-dialog .comment-bubble time { color: var(--cc-muted); }
 .comments-dialog .comments-panel { background: var(--cc-surface); }
 .comments-dialog .comment-form { border-top: 1px solid var(--cc-border); background: var(--cc-surface); backdrop-filter: none; }
-
-
