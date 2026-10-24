@@ -13,7 +13,7 @@
     {% endif %}
   </div>
   <p class="post-copy">{{ tweet.text|linebreaksbr }}</p>
-  {% if tweet.photo %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" width="{{ tweet.photo.width }}" height="{{ tweet.photo.height }}" loading="lazy"></div>{% endif %}
+  {% if tweet.photo_available %}<div class="post-media"><img src="{{ tweet.photo.url }}" alt="Photo shared by {{ tweet.user.username }}" width="{{ tweet.photo.width }}" height="{{ tweet.photo.height }}" loading="lazy"></div>{% endif %}
   <div class="social-actions">
     {% if user.is_authenticated %}
       <form method="post" action="{% url 'toggle_like' tweet.id %}" data-like-form>{% csrf_token %}<button class="like-button{% if tweet.is_liked %} is-liked{% endif %}" type="submit" aria-pressed="{{ tweet.is_liked|yesno:'true,false' }}" data-like-count="{{ tweet.like_count }}" aria-label="{% if tweet.is_liked %}Unlike{% else %}Like{% endif %} post. {{ tweet.like_count }} likes." title="{% if tweet.is_liked %}Unlike{% else %}Like{% endif %}"><svg class="like-icon" width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78Z"/></svg></button></form>
