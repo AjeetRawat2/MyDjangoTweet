@@ -77,6 +77,11 @@ def _feed_context(tweets, user):
         liked_ids = set(Like.objects.filter(user=user, tweet_id__in=tweet_ids).values_list('tweet_id', flat=True))
         followed_ids = set(Follow.objects.filter(follower=user, following_id__in=author_ids).values_list('following_id', flat=True))
     for tweet in tweets:
+        # Render can lose local uploads between deploys; do not let missing
+        # media files break the entire feed when templates inspect dimensions.
+        tweet.photo_available = bool(
+            tweet.photo and tweet.photo.storage.exists(tweet.photo.name)
+        )
         tweet.is_liked = tweet.pk in liked_ids
         tweet.is_following_author = tweet.user_id in followed_ids
     return {'tweets': tweets, 'comment_form': CommentForm()}
